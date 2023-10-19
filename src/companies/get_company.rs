@@ -1,6 +1,12 @@
-use actix_web::{get, HttpResponse};
+use actix_web::{web, HttpRequest, HttpResponse};
 
-#[get("/prism/company/{company_id}")]
-pub async fn get_company(_company_id: String) -> HttpResponse {
-    HttpResponse::Ok().body("OK".to_string())
+pub async fn get_company(_req: HttpRequest, path: web::Path<String>) -> HttpResponse {
+    let company_id = path.into_inner();
+    let app_id = std::env::var("APIDECK_APP_ID").unwrap();
+    let api_key = std::env::var("APIDECK_API_KEY").unwrap();
+
+    HttpResponse::Ok().body(format!(
+        "ID: {}\nAPP_ID: {}\nAPI_KEY: {}\n",
+        company_id, app_id, api_key,
+    ))
 }
