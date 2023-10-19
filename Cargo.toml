@@ -1,6 +1,12 @@
-[workspace]
-resolver = "2"
-members = ["api", "application", "domain", "infrastructure", "shared"]
+[package]
+name = "prism_api"
+version = "0.1.0"
+edition = "2021"
+
+[[bin]]
+edition = "2021"
+name = "prism_api"
+path = "src/main.rs"
 
 [dependencies]
 actix-web = "4.3.1"
