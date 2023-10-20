@@ -1,6 +1,7 @@
 use actix_web::{web, App, HttpServer};
 use log::info;
 mod companies;
+pub mod errors;
 mod service;
 
 #[actix_web::main]
