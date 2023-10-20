@@ -12,15 +12,20 @@ async fn main() -> std::io::Result<()> {
     info!("[+] Setup ENV finished.");
 
     HttpServer::new(|| {
-        App::new()
+        let scope = web::scope("/prism")
             .service(
-                web::resource("/prism/company/{company_id}")
+                web::resource("/company/{company_id}")
                     .route(web::get().to(companies::get_company::get_company))
                     .route(web::post().to(companies::post_company::post_company))
                     .route(web::patch().to(companies::update_company::update_company))
                     .route(web::delete().to(companies::delete_company::delete_company)),
             )
-            .service(companies::get_companies::get_companies)
+            .service(
+                web::resource("/companies")
+                    .route(web::get().to(companies::get_companies::get_companies)),
+            );
+
+        App::new().service(scope)
     })
     .bind(("localhost", 1337))?
     .run()
