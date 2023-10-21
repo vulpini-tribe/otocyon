@@ -7,7 +7,7 @@ pub fn extract_header_as_result(
     header_name: &str,
 ) -> Result<String, ServiceErrors> {
     headers
-        .get(header_name.clone())
+        .get(header_name)
         .map(|host| host.to_str().unwrap_or("").to_string())
         .ok_or(ServiceErrors::SimpleTextException(
             "Header not found: ".to_string().add(header_name),
