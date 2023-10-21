@@ -14,7 +14,7 @@ pub fn extract_header_as_result(
         ))
 }
 
-pub fn get_headers(headers: &HeaderMap) -> (String, String, String, String) {
+pub fn get_auth_headers(headers: &HeaderMap) -> (String, String, String, String) {
     let app_id = std::env::var("APIDECK_APP_ID");
     let auth = format!("Bearer {}", std::env::var("APIDECK_API_KEY").unwrap());
     let (consumer_id, service_id) = (

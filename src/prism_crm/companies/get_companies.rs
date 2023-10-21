@@ -1,23 +1,16 @@
+use super::company_types::Company;
 use crate::prism_crm::users::get_user;
-use crate::service::header_management::get_headers;
+use crate::service::header_management::get_auth_headers;
 use crate::types::Response;
 
 use actix_web::{web, HttpRequest, HttpResponse};
 use awc::Client;
-use serde::{Deserialize, Serialize};
 use serde_json::json;
+use std::vec;
 
-#[derive(Debug, Serialize, Deserialize)]
-struct Company {
-    id: String,
-    name: String,
-    owner_id: String,
-    owner: Option<String>,
-}
-
-pub async fn get_companies(req: HttpRequest) -> HttpResponse {
+pub async fn send_request(req: &HttpRequest) -> Response<Vec<Company>> {
     let client = Client::default();
-    let (app_id, auth, consumer_id, service_id) = get_headers(&req.headers());
+    let (app_id, auth, consumer_id, service_id) = get_auth_headers(&req.headers());
 
     let response = client
         .get("https://unify.apideck.com/crm/companies") // <- Create request builder
@@ -28,12 +21,26 @@ pub async fn get_companies(req: HttpRequest) -> HttpResponse {
         .send() // <- Send http request
         .await;
 
-    let res = response.unwrap().json::<Response<Company>>().await.unwrap();
+    response
+        .unwrap()
+        .json::<Response<Vec<Company>>>()
+        .await
+        .unwrap()
+}
 
-    let _crm_user = get_user::send_request(&req, "512011392").await;
+pub async fn get_companies(req: HttpRequest) -> HttpResponse {
+    let response = send_request(&req).await;
+    let crm_user = get_user::send_request(&req, "512011392").await;
 
-    println!("{:?}", _crm_user);
+    let mut companies: Vec<Company> = vec![];
 
-    // format received data to one unified format
-    HttpResponse::Ok().json(json!(web::Json(res)))
+    response.data.unwrap().into_iter().for_each(|company| {
+        let mut company = company;
+        let crm_user = crm_user.data.clone().unwrap();
+        company.owner = Some(crm_user);
+
+        companies.push(company);
+    });
+
+    HttpResponse::Ok().json(json!(web::Json(companies)))
 }

@@ -1,7 +1,7 @@
-use crate::prism_crm::types::{Address, PhoneNumber};
+use crate::prism_crm::crm_types::{Address, PhoneNumber};
 use serde::{Deserialize, Serialize};
 
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct CrmUser {
     pub id: String,
     pub parent_id: Option<String>,

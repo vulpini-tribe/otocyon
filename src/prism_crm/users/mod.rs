@@ -1,2 +1,2 @@
 pub mod get_user;
-pub mod types;
+pub mod user_types;

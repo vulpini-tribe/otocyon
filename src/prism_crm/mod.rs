@@ -1,3 +1,3 @@
 pub mod companies;
-pub mod types;
+pub mod crm_types;
 pub mod users;
