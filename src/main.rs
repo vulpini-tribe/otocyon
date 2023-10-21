@@ -1,6 +1,7 @@
 pub mod errors;
 pub mod prism_crm;
 pub mod service;
+pub mod types;
 
 use crate::prism_crm::{companies, users};
 use actix_web::{web, App, HttpServer};
