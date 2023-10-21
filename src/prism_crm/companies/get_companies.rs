@@ -33,7 +33,6 @@ pub async fn send_request(req: &HttpRequest) -> Response<Vec<Company>> {
 
 pub async fn get_companies(req: HttpRequest) -> HttpResponse {
     let response = send_request(&req).await;
-    // let crm_user = get_user::send_request(&req, "512011392").await;
 
     let mut companies: Vec<Company> = vec![];
     let mut uniq_owner_ids: HashSet<String> = HashSet::new();

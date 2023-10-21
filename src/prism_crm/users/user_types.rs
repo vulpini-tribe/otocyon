@@ -1,4 +1,4 @@
-use crate::prism_crm::crm_types::{Address, PhoneNumber};
+use crate::types::{Address, PhoneNumber};
 use serde::{Deserialize, Serialize};
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
