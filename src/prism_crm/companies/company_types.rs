@@ -3,9 +3,34 @@ use crate::types;
 use serde::{Deserialize, Serialize};
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
+pub struct CompanyFormatted {
+    pub id: String,
+    pub name: String,
+    pub description: Option<String>,
+    pub contact_person: Option<String>, // salutation + first_name + last_name
+
+    pub status: Option<String>,
+    pub annual_revenue: Option<String>,
+    pub number_of_employees: Option<String>,
+    pub industry: Option<String>,
+    pub ownership: Option<String>,
+
+    pub tags: Option<Vec<String>>,
+
+    pub bank_accounts: Option<Vec<types::BankAccount>>,
+    pub websites: Option<Vec<types::Website>>,
+    pub addresses: Option<Vec<types::Address>>,
+    pub social_links: Option<Vec<types::Website>>,
+    pub phone_numbers: Option<Vec<types::FormattedPhoneNumber>>,
+    pub emails: Option<Vec<types::Email>>,
+
+    pub owner: Option<user_types::CrmUser>,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct Company {
     pub id: String,
-    pub name: Option<String>,
+    pub name: String, // Name of the company
     pub interaction_count: Option<i32>,
     pub owner_id: Option<String>,
     pub owner: Option<user_types::CrmUser>,

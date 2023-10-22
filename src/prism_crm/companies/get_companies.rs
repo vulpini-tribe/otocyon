@@ -1,4 +1,5 @@
-use super::company_types::Company;
+use super::company_types::{Company, CompanyFormatted};
+use super::formatters::format_company;
 use crate::prism_crm::users::get_user;
 use crate::prism_crm::users::user_types::CrmUser;
 use crate::service::header_management::get_auth_headers;
@@ -16,7 +17,7 @@ pub async fn send_request(req: &HttpRequest) -> Response<Vec<Company>> {
     let (app_id, auth, consumer_id, service_id) = get_auth_headers(&req.headers());
 
     let response = client
-        .get("https://unify.apideck.com/crm/companies?limit=60")
+        .get("https://unify.apideck.com/crm/companies?limit=10")
         .insert_header(("Authorization", auth))
         .insert_header(("x-apideck-app-id", app_id))
         .insert_header(("x-apideck-service-id", service_id))
@@ -34,7 +35,7 @@ pub async fn send_request(req: &HttpRequest) -> Response<Vec<Company>> {
 pub async fn get_companies(req: HttpRequest) -> HttpResponse {
     let response = send_request(&req).await;
 
-    let mut companies: Vec<Company> = vec![];
+    let mut companies: Vec<CompanyFormatted> = vec![];
     let mut uniq_owner_ids: HashSet<String> = HashSet::new();
     let mut owner_map: HashMap<String, CrmUser> = HashMap::new();
     let main_response = response.data.clone().unwrap();
@@ -58,12 +59,11 @@ pub async fn get_companies(req: HttpRequest) -> HttpResponse {
     });
 
     response.data.unwrap().into_iter().for_each(|company| {
-        let mut company = company;
         let owner_id = company.owner_id.clone().unwrap();
         let crm_user = owner_map.get(&owner_id);
-        company.owner = crm_user.cloned();
+        let formatted_company = format_company(&company, crm_user.cloned());
 
-        companies.push(company);
+        companies.push(formatted_company);
     });
 
     HttpResponse::Ok().json(json!(web::Json(companies)))

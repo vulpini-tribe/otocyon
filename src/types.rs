@@ -26,7 +26,7 @@ pub struct BankAccount {
 pub struct Website {
     pub id: Option<String>,
     pub url: Option<String>,
-    pub _type: Option<String>,
+    pub r#type: Option<String>,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
@@ -66,7 +66,13 @@ pub struct PhoneNumber {
     pub area_code: Option<String>,
     pub number: Option<String>,
     pub extension: Option<String>,
-    pub _type: Option<String>,
+    pub r#type: Option<String>,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub struct FormattedPhoneNumber {
+    pub number: Option<String>,
+    pub r#type: Option<String>,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
