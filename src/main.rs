@@ -34,7 +34,7 @@ async fn main() -> std::io::Result<()> {
 
         App::new().service(scope)
     })
-    .bind(("localhost", 1337))?
+    .bind((env_config.host, env_config.port))?
     .run()
     .await
 }
