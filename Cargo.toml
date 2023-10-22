@@ -9,7 +9,6 @@ name = "prism_api"
 path = "src/main.rs"
 
 [dependencies]
-
 actix-web = "4"
 actix-service = "2"
 actix-cors = "0.6"
