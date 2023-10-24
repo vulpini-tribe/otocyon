@@ -48,7 +48,7 @@ pub async fn get_companies(req: HttpRequest) -> HttpResponse {
     let futures = FuturesUnordered::new();
 
     for owner_id in &uniq_owner_ids {
-        let crm_user = get_user::send_request(&req, owner_id);
+        let crm_user = get_user::send_request(&req, &owner_id);
         futures.push(crm_user);
     }
 

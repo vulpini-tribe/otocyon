@@ -1,5 +1,11 @@
 use serde::{Deserialize, Serialize};
 
+// Network
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub struct DeletePayload {
+    pub id: String,
+}
+
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct Response<T> {
     pub data: Option<T>,
@@ -7,6 +13,7 @@ pub struct Response<T> {
     pub status: Option<String>,
 }
 
+// Entities
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct BankAccount {
     pub bank_name: Option<String>,

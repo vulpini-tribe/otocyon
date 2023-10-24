@@ -6,7 +6,7 @@ use actix_web::{web, HttpRequest, HttpResponse};
 use awc::Client;
 use serde_json::json;
 
-pub async fn send_request(req: &HttpRequest, user_id: &str) -> Response<CrmUser> {
+pub async fn send_request(req: &HttpRequest, user_id: &String) -> Response<CrmUser> {
     let client = Client::default();
     let (app_id, auth, consumer_id, service_id) = get_auth_headers(&req.headers());
 
@@ -23,8 +23,8 @@ pub async fn send_request(req: &HttpRequest, user_id: &str) -> Response<CrmUser>
 }
 
 pub async fn get_user(req: HttpRequest, payload: web::Path<String>) -> HttpResponse {
-    let company_id = payload.into_inner();
-    let response = send_request(&req, &company_id).await;
+    let user_id = payload.into_inner();
+    let response = send_request(&req, &user_id).await;
 
     HttpResponse::Ok().json(json!(web::Json(response)))
 }
