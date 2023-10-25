@@ -111,8 +111,8 @@ pub struct Email {
 
 #[derive(Default, Debug, Clone, Serialize, Deserialize)]
 pub struct RowType {
-    pub id: String,
-    pub name: String,
+    pub id: Option<String>,
+    pub name: Option<String>,
 }
 
 #[derive(Default, Debug, Clone, Serialize, Deserialize)]

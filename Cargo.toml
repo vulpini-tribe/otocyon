@@ -28,3 +28,4 @@ awc = { version = "3", features = ["openssl"] }
 actix-rt = "2"
 url-match = "0.1.7"
 futures = "0.3.28"
+serde_with = "3.4.0"
