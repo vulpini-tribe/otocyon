@@ -1,12 +1,12 @@
 use serde::{Deserialize, Serialize};
 
 // Network
-#[derive(Debug, Clone, Serialize, Deserialize)]
+#[derive(Default, Debug, Clone, Serialize, Deserialize)]
 pub struct DeletePayload {
     pub id: String,
 }
 
-#[derive(Debug, Clone, Serialize, Deserialize)]
+#[derive(Default, Debug, Clone, Serialize, Deserialize)]
 pub struct Isss {
     pub code: Option<String>,
     pub message: Option<String>,
@@ -21,7 +21,7 @@ pub enum Dynamic {
     Err(Vec<Isss>),
 }
 
-#[derive(Debug, Clone, Serialize, Deserialize)]
+#[derive(Default, Debug, Clone, Serialize, Deserialize)]
 pub struct Response<T> {
     pub data: Option<T>,
     pub status_code: Option<u16>,
@@ -34,7 +34,7 @@ pub struct Response<T> {
 }
 
 // Entities
-#[derive(Debug, Clone, Serialize, Deserialize)]
+#[derive(Default, Debug, Clone, Serialize, Deserialize)]
 pub struct BankAccount {
     pub bank_name: Option<String>,
     pub account_number: Option<String>,
@@ -49,14 +49,14 @@ pub struct BankAccount {
     pub currency: Option<String>, // ISO 4217 currency code
 }
 
-#[derive(Debug, Clone, Serialize, Deserialize)]
+#[derive(Default, Debug, Clone, Serialize, Deserialize)]
 pub struct Website {
     pub id: Option<String>,
     pub url: Option<String>,
     pub r#type: Option<String>,
 }
 
-#[derive(Debug, Clone, Serialize, Deserialize)]
+#[derive(Default, Debug, Clone, Serialize, Deserialize)]
 pub struct Address {
     pub id: Option<String>,
     pub r#type: Option<String>, // 'primary' | 'secondary' | 'home' | 'office' | 'shipping' | 'billing' | 'other',
@@ -86,7 +86,7 @@ pub struct Address {
     pub row_version: Option<String>,
 }
 
-#[derive(Debug, Clone, Serialize, Deserialize)]
+#[derive(Default, Debug, Clone, Serialize, Deserialize)]
 pub struct PhoneNumber {
     pub id: Option<String>,
     pub country_code: Option<String>,
@@ -96,26 +96,26 @@ pub struct PhoneNumber {
     pub r#type: Option<String>,
 }
 
-#[derive(Debug, Clone, Serialize, Deserialize)]
+#[derive(Default, Debug, Clone, Serialize, Deserialize)]
 pub struct FormattedPhoneNumber {
     pub number: Option<String>,
     pub r#type: Option<String>,
 }
 
-#[derive(Debug, Clone, Serialize, Deserialize)]
+#[derive(Default, Debug, Clone, Serialize, Deserialize)]
 pub struct Email {
     pub id: String,
     pub r#type: String, // 'primary' | 'secondary' | 'home' | 'office' | 'other',
     pub email: String,
 }
 
-#[derive(Debug, Clone, Serialize, Deserialize)]
+#[derive(Default, Debug, Clone, Serialize, Deserialize)]
 pub struct RowType {
     pub id: String,
     pub name: String,
 }
 
-#[derive(Debug, Clone, Serialize, Deserialize)]
+#[derive(Default, Debug, Clone, Serialize, Deserialize)]
 pub struct CustomField {
     pub id: String,
     pub name: String,

@@ -2,7 +2,7 @@ use crate::prism_crm::users::user_types;
 use crate::types;
 use serde::{Deserialize, Serialize};
 
-#[derive(Debug, Clone, Serialize, Deserialize)]
+#[derive(Default, Debug, Clone, Serialize, Deserialize)]
 pub struct CompanyFormatted {
     pub id: String,
     pub name: String,
@@ -27,7 +27,7 @@ pub struct CompanyFormatted {
     pub owner: Option<user_types::CrmUser>,
 }
 
-#[derive(Debug, Clone, Serialize, Deserialize)]
+#[derive(Default, Debug, Clone, Serialize, Deserialize)]
 pub struct Company {
     pub id: String,
     pub name: String, // Name of the company
@@ -72,10 +72,9 @@ pub struct Company {
     pub created_at: Option<String>,
 }
 
-#[derive(Debug, Clone, Serialize, Deserialize)]
+#[derive(Default, Debug, Clone, Serialize, Deserialize)]
 pub struct PostCompany {
     pub name: String,
-    pub owner_id: Option<String>,
     pub image: Option<String>,
     pub description: Option<String>,
     pub vat_number: Option<String>,

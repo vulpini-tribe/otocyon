@@ -1,7 +1,7 @@
 use crate::types::{Address, PhoneNumber};
 use serde::{Deserialize, Serialize};
 
-#[derive(Debug, Clone, Serialize, Deserialize)]
+#[derive(Default, Debug, Clone, Serialize, Deserialize)]
 pub struct CrmUser {
     pub id: String,
     pub parent_id: Option<String>,
