@@ -1,11 +1,5 @@
 use serde::{Deserialize, Serialize};
 
-// Network
-#[derive(Default, Debug, Clone, Serialize, Deserialize)]
-pub struct DeletePayload {
-    pub id: String,
-}
-
 #[derive(Default, Debug, Clone, Serialize, Deserialize)]
 pub struct Isss {
     pub code: Option<String>,
