@@ -18,15 +18,15 @@ async fn main() -> std::io::Result<()> {
     HttpServer::new(|| {
         let scope = web::scope("/prism")
             .service(
+                web::resource("/companies")
+                    .route(web::post().to(companies::post_company::post_company))
+                    .route(web::get().to(companies::get_companies::get_companies)),
+            )
+            .service(
                 web::resource("/companies/{company_id}")
                     .route(web::get().to(companies::get_company::get_company))
                     .route(web::patch().to(companies::update_company::update_company))
                     .route(web::delete().to(companies::delete_company::delete_company)),
-            )
-            .service(
-                web::resource("/companies")
-                    .route(web::post().to(companies::post_company::post_company))
-                    .route(web::get().to(companies::get_companies::get_companies)),
             )
             .service(
                 web::resource("/users/{user_id}").route(web::get().to(users::get_user::get_user)),

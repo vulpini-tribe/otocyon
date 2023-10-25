@@ -7,10 +7,30 @@ pub struct DeletePayload {
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
+pub struct Isss {
+    pub code: Option<String>,
+    pub message: Option<String>,
+    pub detail: Option<String>,
+    pub errors: Option<String>,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub enum Dynamic {
+    Ok(String),
+    #[serde(rename = "errors")]
+    Err(Vec<Isss>),
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct Response<T> {
     pub data: Option<T>,
     pub status_code: Option<u16>,
     pub status: Option<String>,
+    pub error: Option<String>,
+    pub type_name: Option<String>,
+    pub message: Option<String>,
+    pub detail: Option<Dynamic>,
+    pub r#ref: Option<String>,
 }
 
 // Entities
@@ -39,7 +59,7 @@ pub struct Website {
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct Address {
     pub id: Option<String>,
-    pub type_: Option<String>, // 'primary' | 'secondary' | 'home' | 'office' | 'shipping' | 'billing' | 'other',
+    pub r#type: Option<String>, // 'primary' | 'secondary' | 'home' | 'office' | 'shipping' | 'billing' | 'other',
     pub string: Option<String>, // The address string
     pub name: Option<String>,
     pub line1: Option<String>,
@@ -85,7 +105,7 @@ pub struct FormattedPhoneNumber {
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct Email {
     pub id: String,
-    pub type_: String, // 'primary' | 'secondary' | 'home' | 'office' | 'other',
+    pub r#type: String, // 'primary' | 'secondary' | 'home' | 'office' | 'other',
     pub email: String,
 }
 
