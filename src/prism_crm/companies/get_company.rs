@@ -1,5 +1,5 @@
 use super::company_types::Company;
-use super::formatters::format_company;
+use super::formatters::format_company_extended;
 use crate::prism_crm::users::get_user;
 use crate::service::header_management::get_auth_headers;
 use crate::types::Response;
@@ -34,7 +34,7 @@ pub async fn get_company(req: HttpRequest, path: web::Path<String>) -> HttpRespo
     let owner_id = company.owner_id.as_ref().unwrap();
 
     let crm_user = get_user::send_request(&req, &owner_id).await;
-    let formatted_company = format_company(&company, crm_user.data.clone());
+    let formatted_company = format_company_extended(&company, crm_user.data.clone());
 
     HttpResponse::Ok().json(json!(web::Json(formatted_company)))
 }

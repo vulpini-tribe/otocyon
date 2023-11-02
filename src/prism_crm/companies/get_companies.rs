@@ -1,15 +1,12 @@
-use super::company_types::{Company, CompanyFormatted};
-use super::formatters::format_company;
-use crate::prism_crm::users::get_user;
-use crate::prism_crm::users::user_types::CrmUser;
+use super::company_types::{Company, CompanyFormattedForList};
+use super::formatters::format_company_list;
 use crate::service::header_management::get_auth_headers;
 use crate::types::Response;
 
 use actix_web::{web, HttpRequest, HttpResponse};
 use awc::Client;
-use futures::stream::{FuturesUnordered, StreamExt};
 use serde_json::json;
-use std::collections::{HashMap, HashSet};
+use std::collections::HashSet;
 use std::vec;
 
 pub async fn send_request(req: &HttpRequest) -> Response<Vec<Company>> {
@@ -35,9 +32,8 @@ pub async fn send_request(req: &HttpRequest) -> Response<Vec<Company>> {
 pub async fn get_companies(req: HttpRequest) -> HttpResponse {
     let response = send_request(&req).await;
 
-    let mut companies: Vec<CompanyFormatted> = vec![];
+    let mut companies: Vec<CompanyFormattedForList> = vec![];
     let mut uniq_owner_ids: HashSet<String> = HashSet::new();
-    let mut owner_map: HashMap<String, CrmUser> = HashMap::new();
     let main_response = response.data.clone().unwrap();
 
     main_response.into_iter().for_each(|company| {
@@ -45,23 +41,8 @@ pub async fn get_companies(req: HttpRequest) -> HttpResponse {
         uniq_owner_ids.insert(company.owner_id.unwrap());
     });
 
-    let futures = FuturesUnordered::new();
-
-    for owner_id in &uniq_owner_ids {
-        let crm_user = get_user::send_request(&req, &owner_id);
-        futures.push(crm_user);
-    }
-
-    let _results: Vec<_> = futures.collect().await;
-    _results.into_iter().for_each(|user| {
-        let user = user.data.unwrap();
-        owner_map.insert(user.id.clone(), user);
-    });
-
     response.data.unwrap().into_iter().for_each(|company| {
-        let owner_id = company.owner_id.clone().unwrap();
-        let crm_user = owner_map.get(&owner_id);
-        let formatted_company = format_company(&company, crm_user.cloned());
+        let formatted_company = format_company_list(&company);
 
         companies.push(formatted_company);
     });

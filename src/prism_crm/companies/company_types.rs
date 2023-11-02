@@ -30,6 +30,21 @@ pub struct CompanyFormatted {
 
 #[serde_with::skip_serializing_none]
 #[derive(Default, Debug, Clone, Serialize, Deserialize)]
+pub struct CompanyFormattedForList {
+    pub id: String,
+    pub name: String,
+    pub image: Option<String>,
+    pub currency: Option<String>,
+    pub status: Option<String>,
+    pub annual_revenue: Option<String>,
+    pub number_of_employees: Option<String>,
+    pub industry: Option<String>,
+    pub ownership: Option<String>,
+    pub social_links: Option<Vec<types::Website>>,
+}
+
+#[serde_with::skip_serializing_none]
+#[derive(Default, Debug, Clone, Serialize, Deserialize)]
 pub struct Company {
     pub id: String,
     pub name: String, // Name of the company

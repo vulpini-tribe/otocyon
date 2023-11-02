@@ -1,4 +1,4 @@
-use super::company_types::{Company, CompanyFormatted};
+use super::company_types::{Company, CompanyFormatted, CompanyFormattedForList};
 use crate::prism_crm::users::user_types::CrmUser;
 use crate::types::FormattedPhoneNumber;
 
@@ -40,7 +40,25 @@ pub fn format_phone_number(
     }
 }
 
-pub fn format_company(company: &Company, owner: Option<CrmUser>) -> CompanyFormatted {
+pub fn format_company_list(company: &Company) -> CompanyFormattedForList {
+    let company = company;
+    let formatted_company = CompanyFormattedForList {
+        id: company.id.clone(),
+        name: company.name.clone(),
+        image: company.image.clone(),
+        currency: company.currency.clone(),
+        status: company.status.clone(),
+        annual_revenue: company.annual_revenue.clone(),
+        number_of_employees: company.number_of_employees.clone(),
+        industry: company.industry.clone(),
+        ownership: company.ownership.clone(),
+        social_links: company.social_links.clone(),
+    };
+
+    formatted_company
+}
+
+pub fn format_company_extended(company: &Company, owner: Option<CrmUser>) -> CompanyFormatted {
     let company = company;
     let mut formatted_company = CompanyFormatted {
         id: company.id.clone(),
