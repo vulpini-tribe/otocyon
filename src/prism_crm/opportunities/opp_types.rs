@@ -1,7 +1,7 @@
-use crate::prism_crm::companies::company_types;
 use crate::prism_crm::contacts::contact_types;
-use crate::prism_crm::leads::lead_types;
-use crate::prism_crm::pipelines::pipeline_types;
+use crate::prism_crm::leads::lead_types::{self, LeadData};
+use crate::prism_crm::pipelines::pipeline_types::{self, PipelineData};
+use crate::prism_crm::{companies::company_types, contacts::contact_types::ContactData};
 use serde_json::Value;
 
 use crate::service::format_money::format_money;
@@ -44,9 +44,9 @@ pub struct OpportunityFormatted {
     // pub contact: Option<contact_types::Contact>, // contact: by primary_contact_id
     // pub pipeline: Option<pipeline_types::Pipeline>, // pipeline: by pipeline_id + pipeline_stage_id
     // pub lead: Option<lead_types::Lead>,          // lead: by lead_id
-    pub contact: Option<Value>,  // contact: by primary_contact_id
-    pub pipeline: Option<Value>, // pipeline: by pipeline_id + pipeline_stage_id
-    pub lead: Option<Value>,     // lead: by lead_id
+    pub contact: Option<ContactData>, // contact: by primary_contact_id
+    pub pipeline: Option<PipelineData>, // pipeline: by pipeline_id + pipeline_stage_id
+    pub lead: Option<LeadData>,       // lead: by lead_id
 }
 
 #[serde_with::skip_serializing_none]
@@ -135,16 +135,12 @@ impl Opportunity {
     pub fn format(
         &self,
         external: (
-            Option<company_types::Company>,
-            Option<Value>,
-            Option<Value>,
-            Option<Value>,
-            // Option<contact_types::Contact>,
-            // Option<pipeline_types::Pipeline>,
-            // Option<lead_types::Lead>,
+            pipeline_types::PipelineData,
+            lead_types::LeadData,
+            contact_types::ContactData,
         ),
     ) -> OpportunityFormatted {
-        let (company, contact, pipeline, lead) = external;
+        let (pipeline, lead, contact) = external;
 
         let mut formatted = OpportunityFormatted {
             id: self.id.clone(),
@@ -166,24 +162,24 @@ impl Opportunity {
             lead: None,
         };
 
-        if self.company_id.is_some() {
-            // formatted.company = format_company(company);
-            formatted.company = company;
-        }
+        // if self.company_id.is_some() {
+        //     // formatted.company = format_company(company);
+        //     formatted.company = company;
+        // }
 
         if self.contact_id.is_some() {
             // formatted.contact = format_contact(contact);
-            formatted.contact = contact;
+            formatted.contact = Some(contact);
         }
 
         if self.pipeline_id.is_some() {
             // formatted.pipeline = format_pipeline(pipeline);
-            formatted.pipeline = pipeline;
+            formatted.pipeline = Some(pipeline);
         }
 
         if self.lead_id.is_some() {
             // formatted.lead = format_lead(lead);
-            formatted.lead = lead;
+            formatted.lead = Some(lead);
         }
 
         formatted

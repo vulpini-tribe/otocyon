@@ -4,25 +4,29 @@ use crate::types::Response;
 use serde_json::Value;
 
 use actix_web::{web, HttpRequest, HttpResponse};
-use awc::Client;
+use reqwest::header::{ACCEPT, AUTHORIZATION, CONTENT_TYPE};
 use serde_json::json;
 
 pub async fn send_request(req: &HttpRequest, contact_id: &String) -> Response<Value> {
-    let client = Client::default();
     let (app_id, auth, consumer_id, service_id) = get_auth_headers(&req.headers());
 
+    let client = reqwest::Client::new();
+    let url = format!("https://unify.apideck.com/crm/contacts/{contact_id}");
+
     let response = client
-        .get(format!(
-            "https://unify.apideck.com/crm/contacts/{contact_id}"
-        ))
-        .insert_header(("Authorization", auth))
-        .insert_header(("x-apideck-app-id", app_id))
-        .insert_header(("x-apideck-service-id", service_id))
-        .insert_header(("x-apideck-consumer-id", consumer_id))
+        .get(url)
+        .header(AUTHORIZATION, auth)
+        .header(CONTENT_TYPE, "application/json")
+        .header(ACCEPT, "application/json")
+        .header("x-apideck-app-id", app_id)
+        .header("x-apideck-service-id", service_id)
+        .header("x-apideck-consumer-id", consumer_id)
         .send()
         .await;
 
-    return response.unwrap().json::<Response<Value>>().await.unwrap();
+    let response = response.unwrap().json::<Response<Value>>().await;
+
+    return response.unwrap();
 }
 
 pub async fn get_contact(req: HttpRequest, payload: web::Path<String>) -> HttpResponse {
