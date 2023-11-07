@@ -1,7 +1,8 @@
-use crate::prism_crm::contacts::contact_types;
-use crate::prism_crm::leads::lead_types::{self, LeadData};
-use crate::prism_crm::pipelines::pipeline_types::{self, PipelineData};
-use crate::prism_crm::{companies::company_types, contacts::contact_types::ContactData};
+use crate::prism_crm::contacts::contact_types::Contact;
+use crate::prism_crm::leads::lead_types::Lead;
+use crate::prism_crm::pipelines::pipeline_types::Pipeline;
+
+use crate::prism_crm::companies::company_types::Company;
 
 use crate::service::format_money::format_money;
 use crate::types;
@@ -39,10 +40,10 @@ pub struct OpportunityFormatted {
     pub status: Option<String>,
     pub tags: Option<Vec<String>>,
 
-    pub company: Option<company_types::Company>, // company: by company_id
-    pub contact: Option<ContactData>,            // contact: by primary_contact_id
-    pub pipeline: Option<PipelineData>,          // pipeline: by pipeline_id + pipeline_stage_id
-    pub lead: Option<LeadData>,                  // lead: by lead_id
+    pub company: Option<Company>,   // company: by company_id
+    pub contact: Option<Contact>,   // contact: by primary_contact_id
+    pub pipeline: Option<Pipeline>, // pipeline: by pipeline_id + pipeline_stage_id
+    pub lead: Option<Lead>,         // lead: by lead_id
 }
 
 #[serde_with::skip_serializing_none]
@@ -128,15 +129,7 @@ impl Opportunity {
         formatted
     }
 
-    pub fn format(
-        &self,
-        external: (
-            company_types::Company,
-            pipeline_types::PipelineData,
-            lead_types::LeadData,
-            contact_types::ContactData,
-        ),
-    ) -> OpportunityFormatted {
+    pub fn format_one(&self, external: (Company, Pipeline, Lead, Contact)) -> OpportunityFormatted {
         let (company, pipeline, lead, contact) = external;
 
         let mut formatted = OpportunityFormatted {

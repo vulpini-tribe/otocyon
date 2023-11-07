@@ -1,11 +1,7 @@
 use serde::{Deserialize, Serialize};
 
-#[derive(Default, Debug, Clone, Serialize, Deserialize)]
-pub struct PipelineData {
-    pub id: String,
-}
-
+#[serde_with::skip_serializing_none]
 #[derive(Default, Debug, Clone, Serialize, Deserialize)]
 pub struct Pipeline {
-    pub data: PipelineData,
+    pub id: String,
 }

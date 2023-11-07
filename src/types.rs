@@ -1,5 +1,6 @@
 use serde::{Deserialize, Serialize};
 
+#[serde_with::skip_serializing_none]
 #[derive(Default, Debug, Clone, Serialize, Deserialize)]
 pub struct Isss {
     pub code: Option<String>,
@@ -8,6 +9,7 @@ pub struct Isss {
     pub errors: Option<String>,
 }
 
+#[serde_with::skip_serializing_none]
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub enum Dynamic {
     Ok(String),
@@ -15,6 +17,7 @@ pub enum Dynamic {
     Err(Vec<Isss>),
 }
 
+#[serde_with::skip_serializing_none]
 #[derive(Default, Debug, Clone, Serialize, Deserialize)]
 pub struct Response<T> {
     pub data: Option<T>,
@@ -28,6 +31,7 @@ pub struct Response<T> {
 }
 
 // Entities
+#[serde_with::skip_serializing_none]
 #[derive(Default, Debug, Clone, Serialize, Deserialize)]
 pub struct BankAccount {
     pub bank_name: Option<String>,
@@ -43,6 +47,7 @@ pub struct BankAccount {
     pub currency: Option<String>, // ISO 4217 currency code
 }
 
+#[serde_with::skip_serializing_none]
 #[derive(Default, Debug, Clone, Serialize, Deserialize)]
 pub struct Website {
     pub id: Option<String>,
@@ -50,6 +55,7 @@ pub struct Website {
     pub r#type: Option<String>,
 }
 
+#[serde_with::skip_serializing_none]
 #[derive(Default, Debug, Clone, Serialize, Deserialize)]
 pub struct Address {
     pub id: Option<String>,
@@ -80,6 +86,7 @@ pub struct Address {
     pub row_version: Option<String>,
 }
 
+#[serde_with::skip_serializing_none]
 #[derive(Default, Debug, Clone, Serialize, Deserialize)]
 pub struct PhoneNumber {
     pub id: Option<String>,
@@ -90,12 +97,14 @@ pub struct PhoneNumber {
     pub r#type: Option<String>,
 }
 
+#[serde_with::skip_serializing_none]
 #[derive(Default, Debug, Clone, Serialize, Deserialize)]
 pub struct FormattedPhoneNumber {
     pub number: Option<String>,
     pub r#type: Option<String>,
 }
 
+#[serde_with::skip_serializing_none]
 #[derive(Default, Debug, Clone, Serialize, Deserialize)]
 pub struct Email {
     pub id: String,
@@ -103,12 +112,14 @@ pub struct Email {
     pub email: String,
 }
 
+#[serde_with::skip_serializing_none]
 #[derive(Default, Debug, Clone, Serialize, Deserialize)]
 pub struct RowType {
     pub id: Option<String>,
     pub name: Option<String>,
 }
 
+#[serde_with::skip_serializing_none]
 #[derive(Default, Debug, Clone, Serialize, Deserialize)]
 pub struct CustomField {
     pub id: String,

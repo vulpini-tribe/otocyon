@@ -1,11 +1,7 @@
 use serde::{Deserialize, Serialize};
 
-#[derive(Default, Debug, Clone, Serialize, Deserialize)]
-pub struct ContactData {
-    pub id: String,
-}
-
+#[serde_with::skip_serializing_none]
 #[derive(Default, Debug, Clone, Serialize, Deserialize)]
 pub struct Contact {
-    pub data: ContactData,
+    pub id: String,
 }
