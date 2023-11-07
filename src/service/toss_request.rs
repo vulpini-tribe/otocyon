@@ -1,5 +1,9 @@
-use super::req_client;
+use crate::companies::get_company;
+use crate::contacts::get_contact;
+use crate::leads::get_lead;
+use crate::pipelines::get_pipeline;
 use crate::types::Response;
+
 use actix_web::HttpRequest;
 use serde_json::Value;
 use std::sync::{Arc, Mutex};
@@ -14,14 +18,17 @@ pub enum RequestKinds {
 
 pub async fn toss_request(
     req: &HttpRequest,
-    url: Arc<Mutex<String>>,
+    entry_id: Arc<Mutex<String>>,
     kind: RequestKinds,
 ) -> (Response<Value>, RequestKinds) {
-    let url = url.lock().unwrap().clone();
-    let client = req_client::req_client(req);
+    let entry_id = entry_id.lock().unwrap().clone();
 
-    let response = client.get(url).send().await;
-    let response = response.unwrap().json::<Response<Value>>().await.unwrap();
+    let response = match kind {
+        RequestKinds::COMPANY => get_company::send_request(req, &entry_id).await,
+        RequestKinds::LEAD => get_lead::send_request(req, &entry_id).await,
+        RequestKinds::CONTACT => get_contact::send_request(req, &entry_id).await,
+        RequestKinds::PIPELINE => get_pipeline::send_request(req, &entry_id).await,
+    };
 
     (response, kind)
 }

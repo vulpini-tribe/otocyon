@@ -3,8 +3,6 @@ use crate::prism_crm::companies::company_types::Company;
 use crate::prism_crm::contacts::contact_types::Contact;
 use crate::prism_crm::leads::lead_types::Lead;
 use crate::prism_crm::pipelines::pipeline_types::Pipeline;
-use crate::types::Response;
-use serde_json::Value;
 
 use crate::service::format_money::format_money;
 
@@ -84,9 +82,4 @@ impl Opportunity {
 
         formatted
     }
-}
-
-pub fn to_opportunity(value: Response<Value>) -> Opportunity {
-    let value = value.data.into();
-    serde_json::from_value(value).unwrap()
 }

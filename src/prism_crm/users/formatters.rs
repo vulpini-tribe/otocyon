@@ -1,6 +1,4 @@
 use super::user_types::{User, UserFormatted, UserFormattedList};
-use crate::types::Response;
-use serde_json::Value;
 
 impl User {
     pub fn format_list(&self) -> UserFormattedList {
@@ -18,9 +16,4 @@ impl User {
 
         formatted
     }
-}
-
-pub fn to_user(value: Response<Value>) -> User {
-    let value = value.data.into();
-    serde_json::from_value(value).unwrap()
 }

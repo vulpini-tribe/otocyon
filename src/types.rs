@@ -1,4 +1,11 @@
+use crate::companies::company_types::Company;
+use crate::contacts::contact_types::Contact;
+use crate::leads::lead_types::Lead;
+use crate::opportunities::opp_types::Opportunity;
+use crate::pipelines::pipeline_types::Pipeline;
+use crate::users::user_types::User;
 use serde::{Deserialize, Serialize};
+use serde_json::Value;
 
 #[serde_with::skip_serializing_none]
 #[derive(Default, Debug, Clone, Serialize, Deserialize)]
@@ -28,6 +35,44 @@ pub struct Response<T> {
     pub message: Option<String>,
     pub detail: Option<Dynamic>,
     pub r#ref: Option<String>,
+}
+
+impl Response<Value> {
+    pub fn to_opportunity(&self) -> Opportunity {
+        let value = self.data.as_ref().unwrap();
+
+        serde_json::from_value(value.clone()).unwrap()
+    }
+
+    pub fn to_company(&self) -> Company {
+        let value = self.data.as_ref().unwrap();
+
+        serde_json::from_value(value.clone()).unwrap()
+    }
+
+    pub fn to_contact(&self) -> Contact {
+        let value = self.data.as_ref().unwrap();
+
+        serde_json::from_value(value.clone()).unwrap()
+    }
+
+    pub fn to_lead(&self) -> Lead {
+        let value = self.data.as_ref().unwrap();
+
+        serde_json::from_value(value.clone()).unwrap()
+    }
+
+    pub fn to_pipeline(&self) -> Pipeline {
+        let value = self.data.as_ref().unwrap();
+
+        serde_json::from_value(value.clone()).unwrap()
+    }
+
+    pub fn to_user(&self) -> User {
+        let value = self.data.as_ref().unwrap();
+
+        serde_json::from_value(value.clone()).unwrap()
+    }
 }
 
 // Entities
