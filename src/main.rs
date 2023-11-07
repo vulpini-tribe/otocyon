@@ -78,6 +78,20 @@ async fn main() -> std::io::Result<()> {
                     .route(web::get().to(leads::get_lead::get_lead))
                     .route(web::patch().to(leads::update_lead::update_lead))
                     .route(web::delete().to(leads::delete_lead::delete_lead)),
+            )
+            /*
+             *          PIPELINES
+             **/
+            .service(
+                web::resource("/pipelines")
+                    .route(web::post().to(pipelines::post_pipeline::post_pipeline))
+                    .route(web::get().to(pipelines::get_pipelines::get_pipelines)),
+            )
+            .service(
+                web::resource("/pipelines/{pipeline_id}")
+                    .route(web::get().to(pipelines::get_pipeline::get_pipeline))
+                    .route(web::patch().to(pipelines::update_pipeline::update_pipeline))
+                    .route(web::delete().to(pipelines::delete_pipeline::delete_pipeline)),
             );
 
         App::new().service(scope)
