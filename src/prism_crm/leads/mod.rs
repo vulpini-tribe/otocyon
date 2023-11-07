@@ -1,3 +1,7 @@
-pub mod formatters;
+pub mod _formatters;
+pub mod _types;
+pub mod delete_lead;
 pub mod get_lead;
-pub mod lead_types;
+pub mod get_leads;
+pub mod post_lead;
+pub mod update_lead;

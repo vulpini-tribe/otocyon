@@ -64,6 +64,20 @@ async fn main() -> std::io::Result<()> {
                     .route(web::get().to(contacts::get_contact::get_contact))
                     .route(web::patch().to(contacts::update_contact::update_contact))
                     .route(web::delete().to(contacts::delete_contact::delete_contact)),
+            )
+            /*
+             *          LEADS
+             **/
+            .service(
+                web::resource("/leads")
+                    .route(web::post().to(leads::post_lead::post_lead))
+                    .route(web::get().to(leads::get_leads::get_leads)),
+            )
+            .service(
+                web::resource("/leads/{lead_id}")
+                    .route(web::get().to(leads::get_lead::get_lead))
+                    .route(web::patch().to(leads::update_lead::update_lead))
+                    .route(web::delete().to(leads::delete_lead::delete_lead)),
             );
 
         App::new().service(scope)

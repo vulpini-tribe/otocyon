@@ -1,4 +1,4 @@
-use super::user_types::{User, UserFormatted, UserFormattedList};
+use super::_types::{User, UserFormatted, UserFormattedList};
 
 impl User {
     pub fn format_list(&self) -> UserFormattedList {

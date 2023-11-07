@@ -1,4 +1,4 @@
-use super::pipeline_types::{Pipeline, PipelineFormatted, PipelineFormattedList};
+use super::_types::{Pipeline, PipelineFormatted, PipelineFormattedList};
 
 impl Pipeline {
     pub fn format_list(&self) -> PipelineFormattedList {

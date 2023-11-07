@@ -1,4 +1,4 @@
-use super::lead_types::{Lead, LeadFormatted, LeadFormattedList};
+use super::_types::{Lead, LeadFormatted, LeadFormattedList};
 
 impl Lead {
     pub fn format_list(&self) -> LeadFormattedList {

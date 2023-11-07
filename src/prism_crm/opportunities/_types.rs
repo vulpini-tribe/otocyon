@@ -1,7 +1,7 @@
 use crate::companies::_types::Company;
 use crate::contacts::_types::Contact;
-use crate::leads::lead_types::Lead;
-use crate::pipelines::pipeline_types::Pipeline;
+use crate::leads::_types::Lead;
+use crate::pipelines::_types::Pipeline;
 use crate::types;
 
 use serde::{Deserialize, Serialize};

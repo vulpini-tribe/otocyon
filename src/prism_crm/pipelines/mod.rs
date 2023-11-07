@@ -1,3 +1,3 @@
-pub mod formatters;
+pub mod _formatters;
+pub mod _types;
 pub mod get_pipeline;
-pub mod pipeline_types;

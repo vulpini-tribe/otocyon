@@ -1,5 +1,5 @@
 use super::_types::{Company, CompanyFormatted, CompanyFormattedList};
-use crate::prism_crm::users::user_types::User;
+use crate::prism_crm::users::_types::User;
 
 impl Company {
     fn format_name(&self) -> Option<String> {
