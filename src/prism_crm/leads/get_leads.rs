@@ -19,12 +19,12 @@ pub async fn get_leads(req: HttpRequest) -> HttpResponse {
         .await
         .unwrap();
 
-    let contacts: Vec<LeadFormattedList> = response
+    let leads: Vec<LeadFormattedList> = response
         .data
         .unwrap()
         .into_iter()
-        .map(|contact| contact.format_list())
+        .map(|lead| lead.format_list())
         .collect();
 
-    HttpResponse::Ok().json(json!(web::Json(contacts)))
+    HttpResponse::Ok().json(json!(web::Json(leads)))
 }

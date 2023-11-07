@@ -35,7 +35,15 @@ async fn main() -> std::io::Result<()> {
              *          USERS
              **/
             .service(
-                web::resource("/users/{user_id}").route(web::get().to(users::get_user::get_user)),
+                web::resource("/users")
+                    .route(web::post().to(users::post_user::post_user))
+                    .route(web::get().to(users::get_users::get_users)),
+            )
+            .service(
+                web::resource("/users/{user_id}")
+                    .route(web::get().to(users::get_user::get_user))
+                    .route(web::patch().to(users::update_user::update_user))
+                    .route(web::delete().to(users::delete_user::delete_user)),
             )
             /*
              *          OPPORTUNITIES
