@@ -61,22 +61,18 @@ impl Opportunity {
         };
 
         if self.company_id.is_some() {
-            // formatted.company = format_company(company);
             formatted.company = Some(company);
         }
 
         if self.contact_id.is_some() {
-            // formatted.contact = format_contact(contact);
             formatted.contact = Some(contact);
         }
 
         if self.pipeline_id.is_some() {
-            // formatted.pipeline = format_pipeline(pipeline);
             formatted.pipeline = Some(pipeline);
         }
 
         if self.lead_id.is_some() {
-            // formatted.lead = format_lead(lead);
             formatted.lead = Some(lead);
         }
 

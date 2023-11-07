@@ -46,10 +46,24 @@ async fn main() -> std::io::Result<()> {
                     .route(web::get().to(opportunities::get_opportunities::get_opportunities)),
             )
             .service(
-                web::resource("/opportunities/{company_id}")
+                web::resource("/opportunities/{opportunity_id}")
                     .route(web::get().to(opportunities::get_opportunity::get_opportunity))
                     .route(web::patch().to(opportunities::update_opportunity::update_opportunity))
                     .route(web::delete().to(opportunities::delete_opportunity::delete_opportunity)),
+            )
+            /*
+             *          CONTACTS
+             **/
+            .service(
+                web::resource("/contacts")
+                    .route(web::post().to(contacts::post_contact::post_contact))
+                    .route(web::get().to(contacts::get_contacts::get_contacts)),
+            )
+            .service(
+                web::resource("/contacts/{contact_id}")
+                    .route(web::get().to(contacts::get_contact::get_contact))
+                    .route(web::patch().to(contacts::update_contact::update_contact))
+                    .route(web::delete().to(contacts::delete_contact::delete_contact)),
             );
 
         App::new().service(scope)

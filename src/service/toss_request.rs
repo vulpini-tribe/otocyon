@@ -6,7 +6,6 @@ use crate::types::Response;
 
 use actix_web::HttpRequest;
 use serde_json::Value;
-use std::sync::{Arc, Mutex};
 
 #[derive(Debug)]
 pub enum RequestKinds {
@@ -18,11 +17,9 @@ pub enum RequestKinds {
 
 pub async fn toss_request(
     req: &HttpRequest,
-    entry_id: Arc<Mutex<String>>,
+    entry_id: String,
     kind: RequestKinds,
 ) -> (Response<Value>, RequestKinds) {
-    let entry_id = entry_id.lock().unwrap().clone();
-
     let response = match kind {
         RequestKinds::COMPANY => get_company::send_request(req, &entry_id).await,
         RequestKinds::LEAD => get_lead::send_request(req, &entry_id).await,
