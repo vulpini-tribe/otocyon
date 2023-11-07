@@ -1,4 +1,4 @@
-use super::opp_types::{Opportunity, OpportunityFormatted, OpportunityFormattedList};
+use super::_types::{Opportunity, OpportunityFormatted, OpportunityFormattedList};
 use crate::prism_crm::companies::_types::Company;
 use crate::prism_crm::contacts::_types::Contact;
 use crate::prism_crm::leads::lead_types::Lead;

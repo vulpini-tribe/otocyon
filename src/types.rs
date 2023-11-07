@@ -1,7 +1,7 @@
 use crate::companies::_types::Company;
 use crate::contacts::_types::Contact;
 use crate::leads::lead_types::Lead;
-use crate::opportunities::opp_types::Opportunity;
+use crate::opportunities::_types::Opportunity;
 use crate::pipelines::pipeline_types::Pipeline;
 use crate::users::user_types::User;
 use serde::{Deserialize, Serialize};
