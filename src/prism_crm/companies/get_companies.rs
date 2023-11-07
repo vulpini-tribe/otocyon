@@ -1,5 +1,5 @@
-use super::company_types::{Company, CompanyFormattedForList};
-use super::formatters::format_company_list;
+// use super::_formatters::format_company_list;
+use super::_types::{Company, CompanyFormattedList};
 use crate::types::Response;
 
 use crate::service::req_client::req_client;
@@ -21,7 +21,7 @@ pub async fn send_request(req: &HttpRequest) -> Response<Vec<Company>> {
 pub async fn get_companies(req: HttpRequest) -> HttpResponse {
     let response = send_request(&req).await;
 
-    let mut companies: Vec<CompanyFormattedForList> = vec![];
+    let mut companies: Vec<CompanyFormattedList> = vec![];
     let mut uniq_owner_ids: HashSet<String> = HashSet::new();
     let main_response = response.data.clone().unwrap();
 
@@ -31,7 +31,7 @@ pub async fn get_companies(req: HttpRequest) -> HttpResponse {
     });
 
     response.data.unwrap().into_iter().for_each(|company| {
-        let formatted_company = format_company_list(&company);
+        let formatted_company = company.format_list();
 
         companies.push(formatted_company);
     });

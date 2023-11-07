@@ -1,4 +1,4 @@
-use super::company_types::PostCompany;
+use super::_types::PostCompany;
 use crate::service::req_client::req_client;
 use actix_web::{web, HttpRequest, HttpResponse};
 use serde_json::Value;

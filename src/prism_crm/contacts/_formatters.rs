@@ -1,4 +1,4 @@
-use super::contact_types::{Contact, ContactFormatted, ContactFormattedList};
+use super::_types::{Contact, ContactFormatted, ContactFormattedList};
 
 impl Contact {
     pub fn format_list(&self) -> ContactFormattedList {

@@ -1,7 +1,7 @@
-use crate::prism_crm::companies::company_types::Company;
-use crate::prism_crm::contacts::contact_types::Contact;
-use crate::prism_crm::leads::lead_types::Lead;
-use crate::prism_crm::pipelines::pipeline_types::Pipeline;
+use crate::companies::_types::Company;
+use crate::contacts::_types::Contact;
+use crate::leads::lead_types::Lead;
+use crate::pipelines::pipeline_types::Pipeline;
 use crate::types;
 
 use serde::{Deserialize, Serialize};

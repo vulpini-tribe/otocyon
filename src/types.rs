@@ -1,5 +1,5 @@
-use crate::companies::company_types::Company;
-use crate::contacts::contact_types::Contact;
+use crate::companies::_types::Company;
+use crate::contacts::_types::Contact;
 use crate::leads::lead_types::Lead;
 use crate::opportunities::opp_types::Opportunity;
 use crate::pipelines::pipeline_types::Pipeline;
@@ -142,9 +142,37 @@ pub struct PhoneNumber {
     pub r#type: Option<String>,
 }
 
+impl PhoneNumber {
+    pub fn collect_number(&self) -> Option<String> {
+        let country_code = self.country_code.as_deref().unwrap_or("");
+        let area_code = self.area_code.as_deref().unwrap_or("");
+        let number = self.number.as_deref().unwrap_or("");
+
+        let _phone_number = format!("{} {} {}", country_code, area_code, number)
+            .trim()
+            .to_string();
+
+        match _phone_number.is_empty() {
+            true => None,
+            false => Some(_phone_number),
+        }
+    }
+
+    pub fn format(&self) -> FormattedPhoneNumber {
+        let number = self.collect_number();
+
+        return FormattedPhoneNumber {
+            id: self.id.clone(),
+            r#type: self.r#type.clone(),
+            number,
+        };
+    }
+}
+
 #[serde_with::skip_serializing_none]
 #[derive(Default, Debug, Clone, Serialize, Deserialize)]
 pub struct FormattedPhoneNumber {
+    pub id: Option<String>,
     pub number: Option<String>,
     pub r#type: Option<String>,
 }

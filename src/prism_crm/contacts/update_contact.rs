@@ -1,4 +1,4 @@
-use super::contact_types::PostContact;
+use super::_types::PostContact;
 use crate::service::req_client::req_client;
 use actix_web::{web, HttpRequest, HttpResponse};
 use serde_json::Value;

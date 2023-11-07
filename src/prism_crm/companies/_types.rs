@@ -30,7 +30,7 @@ pub struct CompanyFormatted {
 
 #[serde_with::skip_serializing_none]
 #[derive(Default, Debug, Clone, Serialize, Deserialize)]
-pub struct CompanyFormattedForList {
+pub struct CompanyFormattedList {
     pub id: String,
     pub name: String,
     pub image: Option<String>,

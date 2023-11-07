@@ -1,4 +1,4 @@
-use super::contact_types::{Contact, ContactFormattedList};
+use super::_types::{Contact, ContactFormattedList};
 use crate::types::Response;
 
 use crate::service::req_client::req_client;
