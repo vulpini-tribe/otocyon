@@ -3,6 +3,7 @@ use super::formatters::format_company_extended;
 use crate::prism_crm::users::get_user;
 use crate::service::req_client::req_client;
 use crate::types::Response;
+use crate::users::formatters::to_user;
 
 use actix_web::{web, HttpRequest, HttpResponse};
 use serde_json::json;
@@ -24,7 +25,8 @@ pub async fn get_company(req: HttpRequest, path: web::Path<String>) -> HttpRespo
     let owner_id = company.owner_id.as_ref().unwrap();
 
     let crm_user = get_user::send_request(&req, &owner_id).await;
-    let formatted_company = format_company_extended(&company, crm_user.data.clone());
+    let crm_user = to_user(crm_user);
+    let formatted_company = format_company_extended(&company, Some(crm_user));
 
     HttpResponse::Ok().json(json!(web::Json(formatted_company)))
 }

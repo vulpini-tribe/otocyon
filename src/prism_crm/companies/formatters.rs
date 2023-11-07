@@ -1,6 +1,7 @@
 use super::company_types::{Company, CompanyFormatted, CompanyFormattedForList};
-use crate::prism_crm::users::user_types::CrmUser;
-use crate::types::FormattedPhoneNumber;
+use crate::prism_crm::users::user_types::User;
+use crate::types::{FormattedPhoneNumber, Response};
+use serde_json::Value;
 
 pub fn format_name(
     salutation: &Option<String>,
@@ -58,7 +59,7 @@ pub fn format_company_list(company: &Company) -> CompanyFormattedForList {
     formatted_company
 }
 
-pub fn format_company_extended(company: &Company, owner: Option<CrmUser>) -> CompanyFormatted {
+pub fn format_company_extended(company: &Company, owner: Option<User>) -> CompanyFormatted {
     let company = company;
     let mut formatted_company = CompanyFormatted {
         id: company.id.clone(),
@@ -110,4 +111,9 @@ pub fn format_company_extended(company: &Company, owner: Option<CrmUser>) -> Com
     }
 
     formatted_company
+}
+
+pub fn to_company(value: Response<Value>) -> Company {
+    let value = value.data.into();
+    serde_json::from_value(value).unwrap()
 }

@@ -1,25 +1,16 @@
-use super::user_types::CrmUser;
-use crate::service::header_management::get_auth_headers;
+use crate::service::req_client::req_client;
 use crate::types::Response;
-
 use actix_web::{web, HttpRequest, HttpResponse};
-use awc::Client;
-use serde_json::json;
+use serde_json::{json, Value};
 
-pub async fn send_request(req: &HttpRequest, user_id: &String) -> Response<CrmUser> {
-    let client = Client::default();
-    let (app_id, auth, consumer_id, service_id) = get_auth_headers(&req.headers());
+pub async fn send_request(req: &HttpRequest, user_id: &str) -> Response<Value> {
+    let client = req_client(req);
+    let url = format!("https://unify.apideck.com/crm/users/{user_id}");
 
-    let response = client
-        .get(format!("https://unify.apideck.com/crm/users/{}", user_id))
-        .insert_header(("Authorization", auth))
-        .insert_header(("x-apideck-app-id", app_id))
-        .insert_header(("x-apideck-service-id", service_id))
-        .insert_header(("x-apideck-consumer-id", consumer_id))
-        .send()
-        .await;
+    let response = client.get(url).send().await;
+    let response = response.unwrap().json::<Response<Value>>().await;
 
-    return response.unwrap().json::<Response<CrmUser>>().await.unwrap();
+    return response.unwrap();
 }
 
 pub async fn get_user(req: HttpRequest, payload: web::Path<String>) -> HttpResponse {

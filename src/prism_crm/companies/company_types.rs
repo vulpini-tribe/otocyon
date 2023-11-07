@@ -25,7 +25,7 @@ pub struct CompanyFormatted {
     pub phone_numbers: Option<Vec<types::FormattedPhoneNumber>>,
     pub emails: Option<Vec<types::Email>>,
 
-    pub owner: Option<user_types::CrmUser>,
+    pub owner: Option<user_types::User>,
 }
 
 #[serde_with::skip_serializing_none]
@@ -50,7 +50,7 @@ pub struct Company {
     pub name: String, // Name of the company
     pub interaction_count: Option<i32>,
     pub owner_id: Option<String>,
-    pub owner: Option<user_types::CrmUser>,
+    pub owner: Option<user_types::User>,
     pub image: Option<String>,
     pub description: Option<String>,
     pub vat_number: Option<String>,

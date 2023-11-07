@@ -3,7 +3,7 @@ pub mod prism_crm;
 pub mod service;
 pub mod types;
 
-use crate::prism_crm::{companies, opportunities, users};
+use crate::prism_crm::{companies, contacts, leads, opportunities, pipelines, users};
 use actix_web::{web, App, HttpServer};
 use log::info;
 

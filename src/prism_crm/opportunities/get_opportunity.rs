@@ -1,18 +1,22 @@
-use super::opp_types::Opportunity;
 use crate::companies::company_types::Company;
+use crate::leads::lead_types::Lead;
 use crate::prism_crm::contacts::contact_types::Contact;
-use crate::prism_crm::leads::lead_types::Lead;
 use crate::prism_crm::pipelines::pipeline_types::Pipeline;
+use crate::types::Response;
+
+use super::formatters::to_opportunity;
+use crate::companies::formatters::to_company;
+use crate::contacts::formatters::to_contact;
+use crate::leads::formatters::to_lead;
+use crate::pipelines::formatters::to_pipeline;
 
 use crate::service::req_client::req_client;
 use crate::service::toss_request::{toss_request, RequestKinds};
-use crate::types::Response;
 
 use actix_web::{web, HttpRequest, HttpResponse};
+use futures::stream::FuturesUnordered;
 use futures::StreamExt;
 use serde_json::{json, Value};
-
-use futures::stream::FuturesUnordered;
 use std::sync::{Arc, Mutex};
 
 pub async fn send_request(req: &HttpRequest, opportunity_id: &str) -> Response<Value> {
@@ -25,35 +29,10 @@ pub async fn send_request(req: &HttpRequest, opportunity_id: &str) -> Response<V
     return response.unwrap();
 }
 
-pub fn to_opportunity(value: Value) -> Opportunity {
-    serde_json::from_value(value).unwrap()
-}
-
-pub fn to_lead(value: Response<Value>) -> Lead {
-    let value = value.data.into();
-    serde_json::from_value(value).unwrap()
-}
-
-pub fn to_pipeline(value: Response<Value>) -> Pipeline {
-    let value = value.data.into();
-    serde_json::from_value(value).unwrap()
-}
-
-pub fn to_company(value: Response<Value>) -> Company {
-    let value = value.data.into();
-    serde_json::from_value(value).unwrap()
-}
-
-pub fn fmt_to_contact(value: Response<Value>) -> Contact {
-    let value = value.data.into();
-    serde_json::from_value(value).unwrap()
-}
-
 pub async fn get_opportunity(req: HttpRequest, path: web::Path<String>) -> HttpResponse {
     let opportunity_id = path.into_inner();
     let response = send_request(&req, &opportunity_id).await;
-    let opportunity = response.data.clone().unwrap();
-    let opportunity = to_opportunity(opportunity);
+    let opportunity = to_opportunity(response);
 
     let futures = FuturesUnordered::new();
 
@@ -106,7 +85,7 @@ pub async fn get_opportunity(req: HttpRequest, path: web::Path<String>) -> HttpR
             RequestKinds::PIPELINE => pipeline = Some(to_pipeline(value)),
             RequestKinds::LEAD => lead = Some(to_lead(value)),
             RequestKinds::COMPANY => company = Some(to_company(value)),
-            RequestKinds::CONTACT => contact = Some(fmt_to_contact(value)),
+            RequestKinds::CONTACT => contact = Some(to_contact(value)),
         });
 
     let company = match company {

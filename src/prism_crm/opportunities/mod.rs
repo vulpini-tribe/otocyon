@@ -1,5 +1,5 @@
 pub mod delete_opportunity;
-// pub mod formatters;
+pub mod formatters;
 pub mod get_opportunities;
 pub mod get_opportunity;
 pub mod opp_types;
