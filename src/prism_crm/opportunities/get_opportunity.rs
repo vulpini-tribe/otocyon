@@ -41,7 +41,7 @@ pub fn to_company(value: Value) -> Company {
     serde_json::from_value(value).unwrap()
 }
 
-pub fn to_contact(value: Value) -> Contact {
+pub fn fmt_to_contact(value: Value) -> Contact {
     serde_json::from_value(value).unwrap()
 }
 
@@ -52,57 +52,62 @@ pub async fn get_opportunity(req: HttpRequest, path: web::Path<String>) -> HttpR
 
     let futures = FuturesUnordered::new();
 
-    // let company_id = String::from("17049828698");
-    // let company_url = Arc::new(Mutex::new(format!(
-    //     "https://unify.apideck.com/crm/companies/{company_id}"
-    // )));
-
-    let contact_id = String::from("14856");
-    let contact_url = Arc::new(Mutex::new(format!(
-        "https://unify.apideck.com/crm/contacts/{contact_id}"
-    )));
-
-    let lead_id = String::from("14856");
-    let lead_url = Arc::new(Mutex::new(format!(
-        "https://unify.apideck.com/crm/leads/{lead_id}"
-    )));
-
-    let pipeline_id = String::from("default");
-    let pipeline_url = Arc::new(Mutex::new(format!(
-        "https://unify.apideck.com/crm/pipelines/{pipeline_id}"
-    )));
-
-    // futures.push(toss_request(&req, company_url, RequestKinds::COMPANY));
-    futures.push(toss_request(&req, contact_url, RequestKinds::CONTACT));
-    futures.push(toss_request(&req, lead_url, RequestKinds::LEAD));
-    futures.push(toss_request(&req, pipeline_url, RequestKinds::PIPELINE));
-
-    let results: Vec<_> = futures.collect().await;
-
-    let mut pipeline: Option<Pipeline> = None;
+    let mut company: Option<Company> = None;
+    let mut contact: Option<Contact> = None;
     let mut lead: Option<Lead> = None;
-    // let mut company = None;
-    let mut contact = None;
+    let mut pipeline: Option<Pipeline> = None;
 
-    results.into_iter().for_each(|(value, kind)| match kind {
-        RequestKinds::PIPELINE => {
-            pipeline = Some(to_pipeline(value));
-        }
-        RequestKinds::LEAD => {
-            lead = Some(to_lead(value));
-        }
-        // RequestKinds::COMPANY => {
-        //     company = Some(to_company(value));
-        // }
-        RequestKinds::CONTACT => {
-            contact = Some(to_contact(value));
-        }
-    });
+    if opportunity.company_id.is_some() {
+        let company_id = opportunity.company_id.clone().unwrap();
+        let company_url = Arc::new(Mutex::new(format!(
+            "https://unify.apideck.com/crm/companies/{company_id}"
+        )));
 
-    // println!("PIPELINE: {:#?}", pipeline);
-    // println!("LEAD: {:#?}", lead);
-    // println!("CONTACT: {:#?}", contact);
-    // println!("COMPANY: {:#?}", company);
+        futures.push(toss_request(&req, company_url, RequestKinds::COMPANY));
+    }
+
+    if opportunity.contact_id.is_some() {
+        let contact_id = opportunity.contact_id.clone().unwrap();
+        let contact_url = Arc::new(Mutex::new(format!(
+            "https://unify.apideck.com/crm/contacts/{contact_id}"
+        )));
+
+        futures.push(toss_request(&req, contact_url, RequestKinds::CONTACT));
+    }
+
+    if opportunity.lead_id.is_some() {
+        let lead_id = opportunity.lead_id.clone().unwrap();
+        let lead_url = Arc::new(Mutex::new(format!(
+            "https://unify.apideck.com/crm/leads/{lead_id}"
+        )));
+
+        futures.push(toss_request(&req, lead_url, RequestKinds::LEAD));
+    }
+
+    if opportunity.pipeline_id.is_some() {
+        let pipeline_id = opportunity.pipeline_id.clone().unwrap();
+        let pipeline_url = Arc::new(Mutex::new(format!(
+            "https://unify.apideck.com/crm/pipelines/{pipeline_id}"
+        )));
+
+        futures.push(toss_request(&req, pipeline_url, RequestKinds::PIPELINE));
+    }
+
+    futures
+        .collect::<Vec<_>>()
+        .await
+        .into_iter()
+        .for_each(|(value, kind)| match kind {
+            RequestKinds::PIPELINE => pipeline = Some(to_pipeline(value)),
+            RequestKinds::LEAD => lead = Some(to_lead(value)),
+            RequestKinds::COMPANY => company = Some(to_company(value)),
+            RequestKinds::CONTACT => contact = Some(fmt_to_contact(value)),
+        });
+
+    let company_data = match company {
+        Some(data) => Ok(data),
+        None => Err(()),
+    };
 
     let pipeline_data = match pipeline {
         Some(data) => Ok(data.data),
@@ -119,13 +124,12 @@ pub async fn get_opportunity(req: HttpRequest, path: web::Path<String>) -> HttpR
         None => Err(()),
     };
 
-    let external_values = (
+    let formatted = opportunity.format((
+        company_data.unwrap(),
         pipeline_data.unwrap(),
         lead_data.unwrap(),
         contact_data.unwrap(),
-    );
-
-    let formatted = opportunity.format(external_values);
+    ));
 
     HttpResponse::Ok().json(json!(web::Json(formatted)))
 }

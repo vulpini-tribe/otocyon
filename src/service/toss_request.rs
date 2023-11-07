@@ -5,7 +5,7 @@ use std::sync::{Arc, Mutex};
 
 #[derive(Debug)]
 pub enum RequestKinds {
-    // COMPANY,
+    COMPANY,
     LEAD,
     CONTACT,
     PIPELINE,
