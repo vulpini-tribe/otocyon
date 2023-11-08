@@ -26,6 +26,6 @@ pub fn get_auth_headers(headers: &HeaderMap) -> (String, String, String, String)
         app_id.unwrap(),
         auth,
         consumer_id.unwrap(),
-        service_id.unwrap(),
+        service_id.unwrap_or("".to_string()),
     )
 }
