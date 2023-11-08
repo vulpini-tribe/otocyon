@@ -1,6 +1,6 @@
-use crate::prism_crm::users::get_user;
 use crate::service::req_client::req_client;
 use crate::types::Response;
+use crate::users::get_user;
 
 use actix_web::{web, HttpRequest, HttpResponse};
 use serde_json::{json, Value};

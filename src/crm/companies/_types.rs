@@ -1,5 +1,5 @@
-use crate::prism_crm::users::_types;
 use crate::types;
+use crate::users::_types;
 use serde::{Deserialize, Serialize};
 
 #[serde_with::skip_serializing_none]

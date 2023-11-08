@@ -1,8 +1,8 @@
 use super::_types::{Opportunity, OpportunityFormatted, OpportunityFormattedList};
-use crate::prism_crm::companies::_types::Company;
-use crate::prism_crm::contacts::_types::Contact;
-use crate::prism_crm::leads::_types::Lead;
-use crate::prism_crm::pipelines::_types::Pipeline;
+use crate::companies::_types::Company;
+use crate::contacts::_types::Contact;
+use crate::leads::_types::Lead;
+use crate::pipelines::_types::Pipeline;
 
 use crate::service::format_money::format_money;
 

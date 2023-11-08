@@ -1,9 +1,11 @@
+pub mod crm;
 pub mod errors;
-pub mod prism_crm;
 pub mod service;
 pub mod types;
+pub mod vault;
 
-use crate::prism_crm::{companies, contacts, leads, opportunities, pipelines, users};
+use crate::crm::{companies, contacts, leads, opportunities, pipelines, users};
+use crate::vault::get_connections;
 use actix_web::{web, App, HttpServer};
 use log::info;
 
@@ -17,6 +19,7 @@ async fn main() -> std::io::Result<()> {
 
     HttpServer::new(|| {
         let scope = web::scope("/prism")
+            .service(web::resource("/vault").route(web::get().to(get_connections::get_connections)))
             /*
              *          COMPANIES
              **/
