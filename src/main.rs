@@ -6,6 +6,7 @@ pub mod vault;
 
 use crate::crm::{companies, contacts, leads, opportunities, pipelines, users};
 use crate::vault::get_connections;
+use actix_cors::Cors;
 use actix_web::{web, App, HttpServer};
 use log::info;
 
@@ -18,6 +19,11 @@ async fn main() -> std::io::Result<()> {
     info!("[+] Setup ENV finished.");
 
     HttpServer::new(|| {
+        let cors = Cors::default()
+            .allowed_origin("https://co-dev.apptrium.cloud")
+            .allowed_methods(vec!["GET", "POST", "DELETE", "PATCH", "OPTIONS"])
+            .max_age(3600);
+
         let scope = web::scope("/prism")
             .service(web::resource("/vault").route(web::get().to(get_connections::get_connections)))
             /*
@@ -107,7 +113,7 @@ async fn main() -> std::io::Result<()> {
                     .route(web::patch().to(pipelines::update_pipeline::update_pipeline)),
             );
 
-        App::new().service(scope)
+        App::new().wrap(cors).service(scope)
     })
     .bind((env_config.host, env_config.port))?
     .run()
