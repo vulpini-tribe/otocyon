@@ -23,3 +23,9 @@ pub struct LeadFormatted {
 pub struct PostLead {
     pub title: String,
 }
+
+#[serde_with::skip_serializing_none]
+#[derive(Default, Debug, Clone, Serialize, Deserialize)]
+pub struct DeleteLeads {
+    pub ids: Vec<String>,
+}

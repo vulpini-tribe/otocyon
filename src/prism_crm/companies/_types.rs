@@ -123,3 +123,9 @@ pub struct PostCompany {
     pub salutation: Option<String>,
     pub birthday: Option<String>,
 }
+
+#[serde_with::skip_serializing_none]
+#[derive(Default, Debug, Clone, Serialize, Deserialize)]
+pub struct DeleteCompanies {
+    pub ids: Vec<String>,
+}

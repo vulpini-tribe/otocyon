@@ -23,3 +23,9 @@ pub struct PipelineFormatted {
 pub struct PostPipeline {
     pub title: String,
 }
+
+#[serde_with::skip_serializing_none]
+#[derive(Default, Debug, Clone, Serialize, Deserialize)]
+pub struct DeletePipelines {
+    pub ids: Vec<String>,
+}

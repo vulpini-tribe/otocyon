@@ -23,3 +23,9 @@ pub struct ContactFormattedList {
 pub struct PostContact {
     pub title: String,
 }
+
+#[serde_with::skip_serializing_none]
+#[derive(Default, Debug, Clone, Serialize, Deserialize)]
+pub struct DeleteContacts {
+    pub ids: Vec<String>,
+}

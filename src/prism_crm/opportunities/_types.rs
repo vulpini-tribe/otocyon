@@ -95,3 +95,9 @@ pub struct PostOpportunity {
     pub title: String,
     pub primary_contact_id: String,
 }
+
+#[serde_with::skip_serializing_none]
+#[derive(Default, Debug, Clone, Serialize, Deserialize)]
+pub struct DeleteOpportunities {
+    pub ids: Vec<String>,
+}

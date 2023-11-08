@@ -41,3 +41,9 @@ pub struct UserFormatted {
 pub struct PostUser {
     pub title: String,
 }
+
+#[serde_with::skip_serializing_none]
+#[derive(Default, Debug, Clone, Serialize, Deserialize)]
+pub struct DeleteUsers {
+    pub ids: Vec<String>,
+}

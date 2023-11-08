@@ -23,13 +23,13 @@ async fn main() -> std::io::Result<()> {
             .service(
                 web::resource("/companies")
                     .route(web::post().to(companies::post_company::post_company))
-                    .route(web::get().to(companies::get_companies::get_companies)),
+                    .route(web::get().to(companies::get_companies::get_companies))
+                    .route(web::delete().to(companies::delete_companies::delete_companies)),
             )
             .service(
                 web::resource("/companies/{company_id}")
                     .route(web::get().to(companies::get_company::get_company))
-                    .route(web::patch().to(companies::update_company::update_company))
-                    .route(web::delete().to(companies::delete_company::delete_company)),
+                    .route(web::patch().to(companies::update_company::update_company)),
             )
             /*
              *          USERS
@@ -37,13 +37,13 @@ async fn main() -> std::io::Result<()> {
             .service(
                 web::resource("/users")
                     .route(web::post().to(users::post_user::post_user))
-                    .route(web::get().to(users::get_users::get_users)),
+                    .route(web::get().to(users::get_users::get_users))
+                    .route(web::delete().to(users::delete_users::delete_users)),
             )
             .service(
                 web::resource("/users/{user_id}")
                     .route(web::get().to(users::get_user::get_user))
-                    .route(web::patch().to(users::update_user::update_user))
-                    .route(web::delete().to(users::delete_user::delete_user)),
+                    .route(web::patch().to(users::update_user::update_user)),
             )
             /*
              *          OPPORTUNITIES
@@ -51,13 +51,15 @@ async fn main() -> std::io::Result<()> {
             .service(
                 web::resource("/opportunities")
                     .route(web::post().to(opportunities::post_opportunity::post_opportunity))
-                    .route(web::get().to(opportunities::get_opportunities::get_opportunities)),
+                    .route(web::get().to(opportunities::get_opportunities::get_opportunities))
+                    .route(
+                        web::delete().to(opportunities::delete_opportunities::delete_opportunities),
+                    ),
             )
             .service(
                 web::resource("/opportunities/{opportunity_id}")
                     .route(web::get().to(opportunities::get_opportunity::get_opportunity))
-                    .route(web::patch().to(opportunities::update_opportunity::update_opportunity))
-                    .route(web::delete().to(opportunities::delete_opportunity::delete_opportunity)),
+                    .route(web::patch().to(opportunities::update_opportunity::update_opportunity)),
             )
             /*
              *          CONTACTS
@@ -65,13 +67,13 @@ async fn main() -> std::io::Result<()> {
             .service(
                 web::resource("/contacts")
                     .route(web::post().to(contacts::post_contact::post_contact))
-                    .route(web::get().to(contacts::get_contacts::get_contacts)),
+                    .route(web::get().to(contacts::get_contacts::get_contacts))
+                    .route(web::delete().to(contacts::delete_contacts::delete_contacts)),
             )
             .service(
                 web::resource("/contacts/{contact_id}")
                     .route(web::get().to(contacts::get_contact::get_contact))
-                    .route(web::patch().to(contacts::update_contact::update_contact))
-                    .route(web::delete().to(contacts::delete_contact::delete_contact)),
+                    .route(web::patch().to(contacts::update_contact::update_contact)),
             )
             /*
              *          LEADS
@@ -79,13 +81,13 @@ async fn main() -> std::io::Result<()> {
             .service(
                 web::resource("/leads")
                     .route(web::post().to(leads::post_lead::post_lead))
-                    .route(web::get().to(leads::get_leads::get_leads)),
+                    .route(web::get().to(leads::get_leads::get_leads))
+                    .route(web::delete().to(leads::delete_leads::delete_leads)),
             )
             .service(
                 web::resource("/leads/{lead_id}")
                     .route(web::get().to(leads::get_lead::get_lead))
-                    .route(web::patch().to(leads::update_lead::update_lead))
-                    .route(web::delete().to(leads::delete_lead::delete_lead)),
+                    .route(web::patch().to(leads::update_lead::update_lead)),
             )
             /*
              *          PIPELINES
@@ -93,13 +95,13 @@ async fn main() -> std::io::Result<()> {
             .service(
                 web::resource("/pipelines")
                     .route(web::post().to(pipelines::post_pipeline::post_pipeline))
-                    .route(web::get().to(pipelines::get_pipelines::get_pipelines)),
+                    .route(web::get().to(pipelines::get_pipelines::get_pipelines))
+                    .route(web::delete().to(pipelines::delete_pipelines::delete_pipelines)),
             )
             .service(
                 web::resource("/pipelines/{pipeline_id}")
                     .route(web::get().to(pipelines::get_pipeline::get_pipeline))
-                    .route(web::patch().to(pipelines::update_pipeline::update_pipeline))
-                    .route(web::delete().to(pipelines::delete_pipeline::delete_pipeline)),
+                    .route(web::patch().to(pipelines::update_pipeline::update_pipeline)),
             );
 
         App::new().service(scope)
