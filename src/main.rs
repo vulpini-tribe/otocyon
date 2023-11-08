@@ -19,10 +19,7 @@ async fn main() -> std::io::Result<()> {
     info!("[+] Setup ENV finished.");
 
     HttpServer::new(|| {
-        let cors = Cors::default()
-            .allowed_origin("https://co-dev.apptrium.cloud")
-            .allowed_methods(vec!["GET", "POST", "DELETE", "PATCH", "OPTIONS"])
-            .max_age(3600);
+        let cors = Cors::permissive();
 
         let scope = web::scope("/prism")
             .service(web::resource("/vault").route(web::get().to(get_connections::get_connections)))
