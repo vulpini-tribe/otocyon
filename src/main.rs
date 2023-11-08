@@ -19,7 +19,11 @@ async fn main() -> std::io::Result<()> {
     info!("[+] Setup ENV finished.");
 
     HttpServer::new(|| {
-        let cors = Cors::permissive();
+        let cors = Cors::default()
+            .allow_any_origin()
+            .allow_any_header()
+            .allow_any_method()
+            .send_wildcard();
 
         let scope = web::scope("/prism")
             .service(web::resource("/vault").route(web::get().to(get_connections::get_connections)))
