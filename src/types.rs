@@ -180,9 +180,9 @@ pub struct FormattedPhoneNumber {
 #[serde_with::skip_serializing_none]
 #[derive(Default, Debug, Clone, Serialize, Deserialize)]
 pub struct Email {
-    pub id: String,
-    pub r#type: String, // 'primary' | 'secondary' | 'home' | 'office' | 'other',
-    pub email: String,
+    pub id: Option<String>,
+    pub r#type: Option<String>, // 'primary' | 'secondary' | 'home' | 'office' | 'other',
+    pub email: Option<String>,
 }
 
 #[serde_with::skip_serializing_none]
