@@ -33,14 +33,10 @@ pub struct CompanyFormatted {
 pub struct CompanyFormattedList {
     pub id: String,
     pub name: String,
-    pub image: Option<String>,
-    pub currency: Option<String>,
-    pub status: Option<String>,
-    pub annual_revenue: Option<String>,
-    pub number_of_employees: Option<String>,
-    pub industry: Option<String>,
-    pub ownership: Option<String>,
-    pub social_links: Option<Vec<types::Website>>,
+    pub image: String,
+    pub website: String,
+    pub primary_phone: String,
+    pub created_at: String,
 }
 
 #[serde_with::skip_serializing_none]
