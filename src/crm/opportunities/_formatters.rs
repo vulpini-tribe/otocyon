@@ -25,10 +25,10 @@ impl Opportunity {
         let formatted = OpportunityFormattedList {
             id: self.id.clone(),
             title: self.title.clone(),
-            r#type: self.r#type.clone(),
             monetary_amount: self.monetary(),
             expected_revenue: self.revenue(),
             win_probability: self.win_probability.clone(),
+            created_at: self.created_at.clone(),
             close_date: self.close_date.clone(),
             priority: self.priority.clone(),
             status: self.status.clone(),

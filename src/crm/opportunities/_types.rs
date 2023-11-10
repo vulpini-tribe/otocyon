@@ -12,13 +12,13 @@ use std::str;
 pub struct OpportunityFormattedList {
     pub title: String,
     pub id: Option<String>,
-    pub r#type: Option<String>,
     pub monetary_amount: Option<String>, // monetary_amount + currency
     pub expected_revenue: Option<String>, // expected_revenue + currency
     pub win_probability: Option<i64>,
     pub close_date: Option<String>,
     pub priority: Option<String>,
     pub status: Option<String>,
+    pub created_at: Option<String>,
 }
 
 #[serde_with::skip_serializing_none]
