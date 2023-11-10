@@ -1,4 +1,4 @@
-use super::_types::{Pipeline, PipelineFormattedList};
+use super::_types::Pipeline;
 use crate::types::Response;
 
 use crate::service::req_client::req_client;
@@ -19,12 +19,7 @@ pub async fn get_pipelines(req: HttpRequest) -> HttpResponse {
         .await
         .unwrap();
 
-    let pipelines: Vec<PipelineFormattedList> = response
-        .data
-        .unwrap()
-        .into_iter()
-        .map(|pipeline| pipeline.format_list())
-        .collect();
+    let pipelines: Vec<Pipeline> = response.data.unwrap();
 
     HttpResponse::Ok().json(json!(web::Json(pipelines)))
 }

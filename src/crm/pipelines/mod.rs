@@ -1,4 +1,3 @@
-pub mod _formatters;
 pub mod _types;
 pub mod delete_pipelines;
 pub mod get_pipeline;
