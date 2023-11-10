@@ -4,7 +4,7 @@ use serde::{Deserialize, Serialize};
 #[derive(Default, Debug, Clone, Serialize, Deserialize)]
 pub struct PipelineStage {
     pub id: String,
-    pub name: Option<String>,
+    pub name: String,
 }
 
 #[serde_with::skip_serializing_none]
@@ -16,7 +16,7 @@ pub struct Pipeline {
     pub archived: Option<bool>,
     pub created_at: Option<String>,
     pub updated_at: Option<String>,
-    pub stages: Option<Vec<PipelineStage>>,
+    pub stages: Vec<PipelineStage>,
 }
 
 #[serde_with::skip_serializing_none]
