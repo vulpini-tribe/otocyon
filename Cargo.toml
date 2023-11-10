@@ -31,3 +31,8 @@ futures = "0.3.28"
 serde_with = "3.4.0"
 rusty-money = { version = "0.4.0", features = ["iso"] }
 num-format = "0.4.4"
+redis = { version = "0.23.3", features = [
+    "tokio-comp",
+    "tokio-native-tls-comp",
+    "json",
+] }

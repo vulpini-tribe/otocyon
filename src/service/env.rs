@@ -7,6 +7,7 @@ pub struct EnvConfig {
     pub app_id: String,
     pub port: u16,
     pub host: String,
+    pub redis_url: String,
 }
 
 impl EnvConfig {
@@ -19,6 +20,7 @@ impl EnvConfig {
             app_id: env::var("APIDECK_APP_ID").expect("APIDECK_APP_ID must be set"),
             port: env::var("PORT").expect("No PORT").parse().unwrap(),
             host: env::var("HOST").expect("No HOST"),
+            redis_url: env::var("REDIS_URL").expect("REDIS_URL must be set"),
         }
     }
 }
