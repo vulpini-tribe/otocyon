@@ -9,7 +9,6 @@ use crate::pipelines::get_pipeline;
 use crate::types::Response;
 
 use actix_web::HttpRequest;
-use serde_json::Value;
 
 #[derive(Debug, PartialEq)]
 pub enum RequestKinds {
@@ -19,34 +18,63 @@ pub enum RequestKinds {
     PIPELINE,
 }
 
-pub enum TypeOr<S, T, F, U> {
-    Left(S),
-    Right(T),
-    One(F),
-    Two(U),
+pub enum TossKindOr<S, T, F, U> {
+    Company(S),
+    Lead(T),
+    Pipeline(F),
+    Contact(U),
 }
+
+impl TossKindOr<Response<Company>, Response<Lead>, Response<Pipeline>, Response<Contact>> {
+    pub fn company(self) -> Option<Company> {
+        match self {
+            TossKindOr::Company(company) => company.data,
+            _ => None,
+        }
+    }
+
+    pub fn lead(self) -> Option<Lead> {
+        match self {
+            TossKindOr::Lead(lead) => lead.data,
+            _ => None,
+        }
+    }
+
+    pub fn pipeline(self) -> Option<Pipeline> {
+        match self {
+            TossKindOr::Pipeline(pipeline) => pipeline.data,
+            _ => None,
+        }
+    }
+
+    pub fn contact(self) -> Option<Contact> {
+        match self {
+            TossKindOr::Contact(contact) => contact.data,
+            _ => None,
+        }
+    }
+}
+
+pub type TossKindOrType =
+    TossKindOr<Response<Company>, Response<Lead>, Response<Pipeline>, Response<Contact>>;
 
 pub async fn toss_request(
     req: &HttpRequest,
     entry_id: String,
     kind: RequestKinds,
-) -> (
-    TypeOr<Response<Company>, Response<Lead>, Response<Pipeline>, Response<Contact>>,
-    RequestKinds,
-) {
-    if kind == RequestKinds::COMPANY {
-        let response: Response<Company> = get_company::send_request(req, &entry_id).await;
-        return (TypeOr::Left(response), kind);
-    } else if kind == RequestKinds::LEAD {
-        let response: Response<Lead> = get_lead::send_request(req, &entry_id).await;
-        return (TypeOr::Right(response), kind);
-    } else if kind == RequestKinds::CONTACT {
-        let response: Response<Contact> = get_contact::send_request(req, &entry_id).await;
-        return (TypeOr::Two(response), kind);
-    } else if kind == RequestKinds::PIPELINE {
-        let response: Response<Pipeline> = get_pipeline::send_request(req, &entry_id).await;
-        return (TypeOr::One(response), kind);
-    } else {
-        panic!("Invalid RequestKinds");
-    }
+) -> (TossKindOrType, RequestKinds) {
+    let request = match kind {
+        RequestKinds::COMPANY => {
+            TossKindOr::Company(get_company::send_request(req, &entry_id).await)
+        }
+        RequestKinds::LEAD => TossKindOr::Lead(get_lead::send_request(req, &entry_id).await),
+        RequestKinds::CONTACT => {
+            TossKindOr::Contact(get_contact::send_request(req, &entry_id).await)
+        }
+        RequestKinds::PIPELINE => {
+            TossKindOr::Pipeline(get_pipeline::send_request(req, &entry_id).await)
+        }
+    };
+
+    return (request, kind);
 }

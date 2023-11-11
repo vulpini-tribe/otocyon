@@ -1,12 +1,8 @@
-use crate::crm::companies::_types::Company;
 use crate::service::req_client::req_client;
 use crate::service::toss_request::{toss_request, RequestKinds};
 use crate::types::Response;
 
-use crate::contacts::_types::Contact;
-use crate::leads::_types::Lead;
-use crate::pipelines::_types::Pipeline;
-use crate::service::toss_request::TypeOr;
+use crate::service::toss_request::TossKindOr;
 use actix_web::{web, HttpRequest, HttpResponse};
 use futures::stream::FuturesUnordered;
 use futures::StreamExt;
@@ -20,40 +16,6 @@ pub async fn send_request(req: &HttpRequest, opportunity_id: &str) -> Response<V
     let response = response.unwrap().json::<Response<Value>>().await;
 
     return response.unwrap();
-}
-
-impl TypeOr<Response<Company>, Response<Lead>, Response<Pipeline>, Response<Contact>> {
-    fn pipeline(self) -> Option<Pipeline> {
-        if let TypeOr::One(c) = self {
-            c.data
-        } else {
-            None
-        }
-    }
-
-    fn company(self) -> Option<Company> {
-        if let TypeOr::Left(c) = self {
-            c.data
-        } else {
-            None
-        }
-    }
-
-    fn lead(self) -> Option<Lead> {
-        if let TypeOr::Right(c) = self {
-            c.data
-        } else {
-            None
-        }
-    }
-
-    fn contact(self) -> Option<Contact> {
-        if let TypeOr::Two(c) = self {
-            c.data
-        } else {
-            None
-        }
-    }
 }
 
 pub async fn get_opportunity(req: HttpRequest, path: web::Path<String>) -> HttpResponse {
@@ -96,10 +58,10 @@ pub async fn get_opportunity(req: HttpRequest, path: web::Path<String>) -> HttpR
         .await
         .into_iter()
         .for_each(|(value, kind)| match kind {
-            RequestKinds::PIPELINE => pipeline = Some(TypeOr::pipeline(value).unwrap()),
-            RequestKinds::LEAD => lead = Some(TypeOr::lead(value).unwrap()),
-            RequestKinds::COMPANY => company = Some(TypeOr::company(value).unwrap()),
-            RequestKinds::CONTACT => contact = Some(TypeOr::contact(value).unwrap()),
+            RequestKinds::PIPELINE => pipeline = Some(TossKindOr::pipeline(value).unwrap()),
+            RequestKinds::LEAD => lead = Some(TossKindOr::lead(value).unwrap()),
+            RequestKinds::COMPANY => company = Some(TossKindOr::company(value).unwrap()),
+            RequestKinds::CONTACT => contact = Some(TossKindOr::contact(value).unwrap()),
         });
 
     let formatted = opportunity.format_one((
