@@ -4,7 +4,7 @@ pub mod service;
 pub mod types;
 pub mod vault;
 
-use crate::crm::{activities, companies, contacts, leads, opportunities, pipelines, users};
+use crate::crm::{activities, companies, contacts, leads, notes, opportunities, pipelines, users};
 use crate::vault::get_connections;
 use actix_cors::Cors;
 use actix_web::{web, App, HttpServer};
@@ -35,6 +35,17 @@ async fn main() -> std::io::Result<()> {
                     .service(
                         web::resource("/vault")
                             .route(web::get().to(get_connections::get_connections)),
+                    )
+                    .service(
+                        web::resource("/notes")
+                            .route(web::post().to(notes::post_note::post_note))
+                            .route(web::get().to(notes::get_notes::get_notes))
+                            .route(web::delete().to(notes::delete_notes::delete_notes)),
+                    )
+                    .service(
+                        web::resource("/notes/{note_id}")
+                            .route(web::get().to(notes::get_note::get_note))
+                            .route(web::patch().to(notes::update_note::update_note)),
                     )
                     .service(
                         web::resource("/activities")
