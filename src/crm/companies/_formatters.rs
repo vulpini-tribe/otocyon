@@ -1,57 +1,16 @@
 use super::_types::{Company, CompanyFormatted, CompanyFormattedList};
-use crate::service::format_phone::format_phone;
 use crate::users::_types::User;
 
+use crate::service::formatters::{get_primary_phone, get_primary_website};
+
 impl Company {
-    fn get_primary_phone(&self) -> String {
-        match &self.phone_numbers {
-            Some(phone_numbers) => {
-                let primary_phone = phone_numbers
-                    .into_iter()
-                    .find(|phone_number| phone_number.r#type == Some("primary".to_string()));
-
-                let primary_phone = match primary_phone {
-                    Some(phone_number) => Some(phone_number),
-                    None => phone_numbers.first(),
-                };
-
-                match primary_phone {
-                    Some(phone_number) => format_phone(phone_number).unwrap_or(String::from("")),
-                    None => return String::from(""),
-                }
-            }
-            None => String::from(""),
-        }
-    }
-
-    fn get_primary_website(&self) -> String {
-        match &self.websites {
-            Some(websites) => {
-                let primary_website = websites
-                    .into_iter()
-                    .find(|website| website.r#type == Some("primary".to_string()));
-
-                let primary_website = match primary_website {
-                    Some(website) => Some(website),
-                    None => websites.first(),
-                };
-
-                match primary_website {
-                    Some(website) => website.clone().url.unwrap(),
-                    None => String::from(""),
-                }
-            }
-            None => String::from(""),
-        }
-    }
-
     pub fn format_list(&self) -> CompanyFormattedList {
         let formatted = CompanyFormattedList {
             id: self.id.clone(),
-            name: self.name.clone(),
+            name: self.name.clone().unwrap_or(String::from("")),
             image: self.image.clone().unwrap_or(String::from("")),
-            website: self.get_primary_website(),
-            primary_phone: self.get_primary_phone(),
+            website: get_primary_website(&self.websites),
+            primary_phone: get_primary_phone(&self.phone_numbers),
             created_at: self.created_at.clone().unwrap_or(String::from("")),
         };
 

@@ -6,7 +6,7 @@ use serde::{Deserialize, Serialize};
 #[derive(Default, Debug, Clone, Serialize, Deserialize)]
 pub struct CompanyFormatted {
     pub id: String,
-    pub name: String,
+    pub name: Option<String>,
     pub description: Option<String>,
     pub contact_person: Option<String>, // salutation + first_name + last_name
 
@@ -43,7 +43,7 @@ pub struct CompanyFormattedList {
 #[derive(Default, Debug, Clone, Serialize, Deserialize)]
 pub struct Company {
     pub id: String,
-    pub name: String, // Name of the company
+    pub name: Option<String>, // Name of the company
     pub interaction_count: Option<i32>,
     pub owner_id: Option<String>,
     pub owner: Option<_types::User>,
