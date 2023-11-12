@@ -8,7 +8,7 @@ use crate::leads::get_lead;
 use crate::pipelines::get_pipeline;
 use crate::types::Response;
 
-use actix_web::HttpRequest;
+use actix_web::{web, HttpRequest};
 
 #[derive(Debug, PartialEq)]
 pub enum RequestKinds {
@@ -62,7 +62,10 @@ pub async fn toss_request(
     req: &HttpRequest,
     entry_id: String,
     kind: RequestKinds,
+    redis: web::Data<redis::Client>,
 ) -> (TossKindOrType, RequestKinds) {
+    let redis = redis.clone();
+
     let request = match kind {
         RequestKinds::COMPANY => {
             TossKindOr::Company(get_company::send_request(req, &entry_id).await)
@@ -72,7 +75,7 @@ pub async fn toss_request(
             TossKindOr::Contact(get_contact::send_request(req, &entry_id).await)
         }
         RequestKinds::PIPELINE => {
-            TossKindOr::Pipeline(get_pipeline::send_request(req, &entry_id).await)
+            TossKindOr::Pipeline(get_pipeline::send_request(req, &entry_id, redis).await)
         }
     };
 

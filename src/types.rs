@@ -1,9 +1,9 @@
-use crate::companies::_types::Company;
 use crate::contacts::_types::Contact;
 use crate::leads::_types::Lead;
 use crate::opportunities::_types::Opportunity;
 use crate::pipelines::_types::Pipeline;
 use crate::users::_types::User;
+use crate::{companies::_types::Company, crm::activities::_types::Activity};
 use serde::{Deserialize, Serialize};
 use serde_json::Value;
 
@@ -69,6 +69,12 @@ impl Response<Value> {
     }
 
     pub fn to_user(&self) -> User {
+        let value = self.data.as_ref().unwrap();
+
+        serde_json::from_value(value.clone()).unwrap()
+    }
+
+    pub fn to_activity(&self) -> Activity {
         let value = self.data.as_ref().unwrap();
 
         serde_json::from_value(value.clone()).unwrap()

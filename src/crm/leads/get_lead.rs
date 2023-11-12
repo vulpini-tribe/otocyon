@@ -2,7 +2,7 @@ use crate::service::req_client::req_client;
 use crate::types::Response;
 
 use actix_web::{web, HttpRequest, HttpResponse};
-use serde_json::{json, Value};
+use serde_json::json;
 
 use super::_types::Lead;
 

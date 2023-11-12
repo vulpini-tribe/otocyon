@@ -4,10 +4,10 @@ pub mod service;
 pub mod types;
 pub mod vault;
 
-use crate::crm::{companies, contacts, leads, opportunities, pipelines, users};
+use crate::crm::{activities, companies, contacts, leads, opportunities, pipelines, users};
 use crate::vault::get_connections;
 use actix_cors::Cors;
-use actix_web::{middleware::Logger, web, App, HttpServer};
+use actix_web::{web, App, HttpServer};
 use log::info;
 
 #[actix_web::main]
@@ -17,6 +17,7 @@ async fn main() -> std::io::Result<()> {
     std::env::set_var("APIDECK_APP_ID", &env_config.app_id);
 
     info!("[+] Setup ENV finished.");
+
     let redis = redis::Client::open(env_config.redis_url).unwrap();
 
     HttpServer::new(move || {
@@ -29,12 +30,24 @@ async fn main() -> std::io::Result<()> {
         App::new()
             .app_data(web::Data::new(redis.clone()))
             .wrap(cors)
-            .wrap(Logger::default())
             .service(
                 web::scope("/prism")
                     .service(
                         web::resource("/vault")
                             .route(web::get().to(get_connections::get_connections)),
+                    )
+                    .service(
+                        web::resource("/activities")
+                            .route(web::post().to(activities::post_activity::post_activity))
+                            .route(web::get().to(activities::get_activities::get_activities))
+                            .route(
+                                web::delete().to(activities::delete_activities::delete_activities),
+                            ),
+                    )
+                    .service(
+                        web::resource("/activities/{activity_id}")
+                            .route(web::get().to(activities::get_activity::get_activity))
+                            .route(web::patch().to(activities::update_activity::update_activity)),
                     )
                     .service(
                         web::resource("/companies")

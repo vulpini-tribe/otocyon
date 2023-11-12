@@ -3,7 +3,7 @@ use crate::types::Response;
 use crate::users::get_user;
 
 use actix_web::{web, HttpRequest, HttpResponse};
-use serde_json::{json, Value};
+use serde_json::json;
 
 use super::_types::Company;
 

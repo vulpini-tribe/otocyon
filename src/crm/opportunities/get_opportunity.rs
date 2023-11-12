@@ -1,3 +1,4 @@
+use super::_types::Opportunity;
 use crate::service::req_client::req_client;
 use crate::service::toss_request::{toss_request, RequestKinds};
 use crate::types::Response;
@@ -6,21 +7,26 @@ use crate::service::toss_request::TossKindOr;
 use actix_web::{web, HttpRequest, HttpResponse};
 use futures::stream::FuturesUnordered;
 use futures::StreamExt;
-use serde_json::{json, Value};
+use serde_json::json;
 
-pub async fn send_request(req: &HttpRequest, opportunity_id: &str) -> Response<Value> {
+pub async fn send_request(req: &HttpRequest, opportunity_id: &str) -> Response<Opportunity> {
     let client = req_client(req);
     let url = format!("https://unify.apideck.com/crm/opportunities/{opportunity_id}");
 
     let response = client.get(url).send().await;
-    let response = response.unwrap().json::<Response<Value>>().await;
+    let response = response.unwrap().json::<Response<Opportunity>>().await;
 
     return response.unwrap();
 }
 
-pub async fn get_opportunity(req: HttpRequest, path: web::Path<String>) -> HttpResponse {
+pub async fn get_opportunity(
+    req: HttpRequest,
+    path: web::Path<String>,
+    redis: web::Data<redis::Client>,
+) -> HttpResponse {
     let opportunity_id = path.into_inner();
-    let opportunity = send_request(&req, &opportunity_id).await.to_opportunity();
+    let opportunity = send_request(&req, &opportunity_id).await;
+    let opportunity = opportunity.data.as_ref().unwrap();
 
     let futures = FuturesUnordered::new();
 
@@ -29,28 +35,43 @@ pub async fn get_opportunity(req: HttpRequest, path: web::Path<String>) -> HttpR
     let mut contact = None;
     let mut pipeline = None;
 
-    if opportunity.company_id.is_some() {
-        let company_id = opportunity.company_id.clone().unwrap();
+    if let Some(company_id) = &opportunity.company_id {
+        let request = toss_request(
+            &req,
+            company_id.clone(),
+            RequestKinds::COMPANY,
+            redis.clone(),
+        );
 
-        futures.push(toss_request(&req, company_id, RequestKinds::COMPANY));
+        futures.push(request)
     }
 
-    if opportunity.contact_id.is_some() {
-        let contact_id = opportunity.contact_id.clone().unwrap();
+    if let Some(contact_id) = &opportunity.contact_id {
+        let request = toss_request(
+            &req,
+            contact_id.clone(),
+            RequestKinds::CONTACT,
+            redis.clone(),
+        );
 
-        futures.push(toss_request(&req, contact_id, RequestKinds::CONTACT));
+        futures.push(request)
     }
 
-    if opportunity.lead_id.is_some() {
-        let lead_id = opportunity.lead_id.clone().unwrap();
+    if let Some(lead_id) = &opportunity.lead_id {
+        let request = toss_request(&req, lead_id.clone(), RequestKinds::LEAD, redis.clone());
 
-        futures.push(toss_request(&req, lead_id, RequestKinds::LEAD));
+        futures.push(request)
     }
 
-    if opportunity.pipeline_id.is_some() {
-        let pipeline_id = opportunity.pipeline_id.clone().unwrap();
+    if let Some(pipeline_id) = &opportunity.pipeline_id {
+        let request = toss_request(
+            &req,
+            pipeline_id.clone(),
+            RequestKinds::PIPELINE,
+            redis.clone(),
+        );
 
-        futures.push(toss_request(&req, pipeline_id, RequestKinds::PIPELINE));
+        futures.push(request)
     }
 
     futures
