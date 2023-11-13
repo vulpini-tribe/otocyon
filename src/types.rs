@@ -203,7 +203,7 @@ pub struct RowType {
 #[derive(Default, Debug, Clone, Serialize, Deserialize)]
 pub struct CustomField {
     pub id: String,
-    pub name: String,
-    pub description: String,
-    pub value: String,
+    pub name: Option<String>,
+    pub description: Option<String>,
+    pub value: Option<Value>,
 }
