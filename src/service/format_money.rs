@@ -2,7 +2,7 @@ use num_format::{Locale, ToFormattedString};
 use rusty_money::{iso, Money};
 
 pub fn format_money(monetary_amount: i64, currency: &str) -> String {
-    let currency = iso::find(currency).unwrap();
+    let currency = iso::find(currency).unwrap_or(iso::USD);
     let money = Money::from_major(monetary_amount, currency);
     let currency = money.currency();
     let amount = monetary_amount.to_formatted_string(&Locale::en);
