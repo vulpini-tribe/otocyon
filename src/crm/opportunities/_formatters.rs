@@ -64,7 +64,7 @@ impl Opportunity {
             formatted.company = Some(company);
         }
 
-        if self.contact_id.is_some() {
+        if self.primary_contact_id.clone().len() > 0 {
             formatted.contact = Some(contact);
         }
 

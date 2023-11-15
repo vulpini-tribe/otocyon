@@ -46,10 +46,10 @@ pub async fn get_opportunity(
         futures.push(request)
     }
 
-    if let Some(contact_id) = &opportunity.contact_id {
+    if opportunity.primary_contact_id.len() > 0 {
         let request = toss_request(
             &req,
-            contact_id.clone(),
+            opportunity.primary_contact_id.clone(),
             RequestKinds::CONTACT,
             redis.clone(),
         );
