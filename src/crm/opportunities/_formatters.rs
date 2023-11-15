@@ -61,7 +61,7 @@ impl Opportunity {
         };
 
         if self.company_id.is_some() {
-            formatted.company = Some(company);
+            formatted.company = Some(company.format_one(None));
         }
 
         if self.primary_contact_id.clone().len() > 0 {
