@@ -38,6 +38,7 @@ pub struct OpportunityFormatted {
     pub status: Option<String>,
     pub tags: Option<Vec<String>>,
 
+    pub custom_fields: Option<Vec<types::CustomField>>,
     pub company: Option<CompanyFormatted>, // company: by company_id
     pub contact: Option<Contact>,          // contact: by primary_contact_id
     pub pipeline: Option<Pipeline>,        // pipeline: by pipeline_id + pipeline_stage_id

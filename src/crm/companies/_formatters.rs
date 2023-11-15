@@ -26,6 +26,7 @@ impl Company {
             contact_person: self.first_name.clone(),
             status: self.status.clone(),
             annual_revenue: self.annual_revenue.clone(),
+
             number_of_employees: self.number_of_employees.clone(),
             industry: self.industry.clone(),
             ownership: self.ownership.clone(),

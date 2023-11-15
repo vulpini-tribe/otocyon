@@ -54,6 +54,8 @@ impl Opportunity {
             priority: self.priority.clone(),
             status: self.status.clone(),
             tags: self.tags.clone(),
+
+            custom_fields: self.custom_fields.clone(),
             company: None,
             contact: None,
             pipeline: None,

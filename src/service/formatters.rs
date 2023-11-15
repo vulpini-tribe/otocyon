@@ -14,7 +14,7 @@ pub fn get_primary_phone(phone_numbers: &Option<Vec<PhoneNumber>>) -> String {
 
             match primary_phone {
                 Some(phone_number) => phone_number.collect_number().unwrap_or(String::from("")),
-                None => return String::from(""),
+                None => String::from(""),
             }
         }
         None => String::from(""),
