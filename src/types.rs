@@ -150,14 +150,24 @@ pub struct PhoneNumber {
 
 impl PhoneNumber {
     pub fn collect_number(&self) -> Option<String> {
-        let country_code = &self.country_code.as_deref().unwrap_or("");
-        let area_code = &self.area_code.as_deref().unwrap_or("");
-        let number = &self.number.as_deref().unwrap_or("");
-        let ext = &self.extension.as_deref().unwrap_or("");
+        let country_code = self.country_code.as_deref().unwrap_or("+1");
+        let area_code = self.area_code.as_deref().unwrap_or("");
+        let number = self.number.as_deref().unwrap_or("");
+        let ext = self.extension.as_deref().unwrap_or("");
 
-        let phone_number = format!("{} {} {}, {}", country_code, area_code, number, ext)
-            .trim()
-            .to_string();
+        let mut phone_number = country_code.to_owned();
+
+        if area_code.len() > 0 {
+            phone_number.push_str(format!(" {area_code}").as_str());
+        }
+
+        if number.len() > 0 {
+            phone_number.push_str(format!(" {number}").as_str());
+        }
+
+        if ext.len() > 0 {
+            phone_number.push_str(format!(", {ext}").as_str());
+        }
 
         match phone_number.is_empty() {
             true => None,
