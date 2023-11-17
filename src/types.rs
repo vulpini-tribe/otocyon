@@ -148,6 +148,14 @@ pub struct PhoneNumber {
     pub r#type: Option<String>,
 }
 
+#[serde_with::skip_serializing_none]
+#[derive(Default, Debug, Clone, Serialize, Deserialize)]
+pub struct FormattedPhoneNumber {
+    pub id: Option<String>,
+    pub number: Option<String>,
+    pub r#type: Option<String>,
+}
+
 impl PhoneNumber {
     pub fn collect_number(&self) -> Option<String> {
         let country_code = self.country_code.as_deref().unwrap_or("");
@@ -169,6 +177,12 @@ impl PhoneNumber {
             phone_number.push_str(format!(", {ext}").as_str());
         }
 
+        phone_number = phone_number.trim().to_owned();
+
+        if !phone_number.starts_with("+") {
+            phone_number.insert_str(0, "+1 ");
+        }
+
         match phone_number.is_empty() {
             true => None,
             false => Some(phone_number),
@@ -188,17 +202,9 @@ impl PhoneNumber {
 
 #[serde_with::skip_serializing_none]
 #[derive(Default, Debug, Clone, Serialize, Deserialize)]
-pub struct FormattedPhoneNumber {
-    pub id: Option<String>,
-    pub number: Option<String>,
-    pub r#type: Option<String>,
-}
-
-#[serde_with::skip_serializing_none]
-#[derive(Default, Debug, Clone, Serialize, Deserialize)]
 pub struct Email {
     pub id: Option<String>,
-    pub r#type: Option<String>, // 'primary' | 'secondary' | 'home' | 'office' | 'other',
+    pub r#type: Option<String>,
     pub email: Option<String>,
 }
 

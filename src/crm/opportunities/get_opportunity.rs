@@ -46,7 +46,7 @@ pub async fn get_opportunity(
         futures.push(request)
     }
 
-    if opportunity.primary_contact_id.len() > 0 {
+    if opportunity.primary_contact_id.len() > 0 && opportunity.primary_contact_id != "n/a" {
         let request = toss_request(
             &req,
             opportunity.primary_contact_id.clone(),
