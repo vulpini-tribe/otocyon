@@ -150,7 +150,7 @@ pub struct PhoneNumber {
 
 impl PhoneNumber {
     pub fn collect_number(&self) -> Option<String> {
-        let country_code = self.country_code.as_deref().unwrap_or("+1");
+        let country_code = self.country_code.as_deref().unwrap_or("");
         let area_code = self.area_code.as_deref().unwrap_or("");
         let number = self.number.as_deref().unwrap_or("");
         let ext = self.extension.as_deref().unwrap_or("");
