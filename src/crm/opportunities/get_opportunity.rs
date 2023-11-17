@@ -79,10 +79,16 @@ pub async fn get_opportunity(
         .await
         .into_iter()
         .for_each(|(value, kind)| match kind {
-            RequestKinds::PIPELINE => pipeline = Some(TossKindOr::pipeline(value).unwrap()),
-            RequestKinds::LEAD => lead = Some(TossKindOr::lead(value).unwrap()),
-            RequestKinds::COMPANY => company = Some(TossKindOr::company(value).unwrap()),
-            RequestKinds::CONTACT => contact = Some(TossKindOr::contact(value).unwrap()),
+            RequestKinds::PIPELINE => {
+                pipeline = Some(TossKindOr::pipeline(value).expect("Pipeline is None"))
+            }
+            RequestKinds::LEAD => lead = Some(TossKindOr::lead(value).expect("Lead is None")),
+            RequestKinds::COMPANY => {
+                company = Some(TossKindOr::company(value).expect("Company is None"))
+            }
+            RequestKinds::CONTACT => {
+                contact = Some(TossKindOr::contact(value).expect("Contact is None"))
+            }
         });
 
     let formatted = opportunity.format_one((
