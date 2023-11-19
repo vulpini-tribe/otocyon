@@ -1,8 +1,12 @@
 use super::_types::Activity;
 use crate::service::req_client::req_client;
+use crate::service::toss_request::TossKindOr;
+use crate::service::toss_request::{toss_request, RequestKinds};
 use crate::types::Response;
 
 use actix_web::{web, HttpRequest, HttpResponse};
+use futures::stream::FuturesUnordered;
+use futures::StreamExt;
 use serde_json::json;
 
 pub async fn send_request(req: &HttpRequest, activity_id: &str) -> Response<Activity> {
@@ -18,14 +22,80 @@ pub async fn send_request(req: &HttpRequest, activity_id: &str) -> Response<Acti
 pub async fn get_activity(
     req: HttpRequest,
     path: web::Path<String>,
-    // redis: web::Data<redis::Client>,
+    redis: web::Data<redis::Client>,
 ) -> HttpResponse {
     let activity_id = path.into_inner();
 
     let activity = send_request(&req, &activity_id).await;
     let activity = activity.data.as_ref().unwrap();
 
-    let formatted = activity.format_one();
+    let futures = FuturesUnordered::new();
+
+    let mut user = None;
+    let mut company = None;
+    let mut contact = None;
+    let mut opportunity = None;
+    let opportunity_id = activity.opportunity_id.clone().unwrap_or(String::from(""));
+    let contact_id = activity.contact_id.clone().unwrap_or(String::from(""));
+
+    if let Some(owner_id) = &activity.owner_id {
+        let request = toss_request(&req, owner_id.clone(), RequestKinds::USER, redis.clone());
+
+        futures.push(request)
+    }
+
+    if let Some(company_id) = &activity.company_id {
+        let request = toss_request(
+            &req,
+            company_id.clone(),
+            RequestKinds::COMPANY,
+            redis.clone(),
+        );
+
+        futures.push(request)
+    }
+
+    if contact_id.len() > 0 && contact_id != "n/a" {
+        let request = toss_request(&req, contact_id, RequestKinds::CONTACT, redis.clone());
+
+        futures.push(request)
+    }
+
+    if opportunity_id.len() > 0 && opportunity_id != "n/a" {
+        let request = toss_request(
+            &req,
+            opportunity_id,
+            RequestKinds::OPPORTUNITY,
+            redis.clone(),
+        );
+
+        futures.push(request)
+    }
+
+    futures
+        .collect::<Vec<_>>()
+        .await
+        .into_iter()
+        .for_each(|(value, kind)| match kind {
+            RequestKinds::USER => user = Some(TossKindOr::user(value).expect("User is None")),
+            RequestKinds::COMPANY => {
+                company = Some(TossKindOr::company(value).expect("Company is None"))
+            }
+            RequestKinds::CONTACT => {
+                contact = Some(TossKindOr::contact(value).expect("Contact is None"))
+            }
+            RequestKinds::OPPORTUNITY => {
+                opportunity = Some(TossKindOr::opportunity(value).expect("Opportunity is None"))
+            }
+            _ => (),
+        });
+
+    let formatted = activity.format_one((
+        user.unwrap_or_default(),
+        company.unwrap_or_default(),
+        contact.unwrap_or_default(),
+        opportunity.unwrap_or_default(),
+    ));
 
     HttpResponse::Ok().json(json!(web::Json(formatted)))
 }

@@ -1,12 +1,14 @@
-use crate::companies::get_company;
-use crate::contacts::get_contact;
-use crate::crm::companies::_types::Company;
-use crate::crm::contacts::_types::Contact;
-use crate::crm::leads::_types::Lead;
-use crate::crm::pipelines::_types::Pipeline;
+use crate::leads::_types::Lead;
 use crate::leads::get_lead;
+use crate::pipelines::_types::Pipeline;
 use crate::pipelines::get_pipeline;
 use crate::types::Response;
+use crate::users::_types::User;
+use crate::users::get_user;
+
+use crate::companies::{_types::Company, get_company};
+use crate::contacts::{_types::Contact, get_contact};
+use crate::opportunities::{_types::Opportunity, get_opportunity};
 
 use actix_web::{web, HttpRequest};
 
@@ -16,16 +18,29 @@ pub enum RequestKinds {
     LEAD,
     CONTACT,
     PIPELINE,
+    USER,
+    OPPORTUNITY,
 }
 
-pub enum TossKindOr<S, T, F, U> {
-    Company(S),
-    Lead(T),
-    Pipeline(F),
-    Contact(U),
+pub enum TossKindOr<C, L, P, CO, U, O> {
+    Company(C),
+    Lead(L),
+    Pipeline(P),
+    Contact(CO),
+    User(U),
+    Opportunity(O),
 }
 
-impl TossKindOr<Response<Company>, Response<Lead>, Response<Pipeline>, Response<Contact>> {
+pub type TossKindOrType = TossKindOr<
+    Response<Company>,
+    Response<Lead>,
+    Response<Pipeline>,
+    Response<Contact>,
+    Response<User>,
+    Response<Opportunity>,
+>;
+
+impl TossKindOrType {
     pub fn company(self) -> Option<Company> {
         match self {
             TossKindOr::Company(company) => company.data,
@@ -53,10 +68,21 @@ impl TossKindOr<Response<Company>, Response<Lead>, Response<Pipeline>, Response<
             _ => None,
         }
     }
-}
 
-pub type TossKindOrType =
-    TossKindOr<Response<Company>, Response<Lead>, Response<Pipeline>, Response<Contact>>;
+    pub fn user(self) -> Option<User> {
+        match self {
+            TossKindOr::User(user) => user.data,
+            _ => None,
+        }
+    }
+
+    pub fn opportunity(self) -> Option<Opportunity> {
+        match self {
+            TossKindOr::Opportunity(opportunity) => opportunity.data,
+            _ => None,
+        }
+    }
+}
 
 pub async fn toss_request(
     req: &HttpRequest,
@@ -76,6 +102,10 @@ pub async fn toss_request(
         }
         RequestKinds::PIPELINE => {
             TossKindOr::Pipeline(get_pipeline::send_request(req, &entry_id, redis).await)
+        }
+        RequestKinds::USER => TossKindOr::User(get_user::send_request(req, &entry_id).await),
+        RequestKinds::OPPORTUNITY => {
+            TossKindOr::Opportunity(get_opportunity::send_request(req, &entry_id).await)
         }
     };
 

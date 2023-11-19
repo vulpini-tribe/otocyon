@@ -2,6 +2,7 @@ use crate::contacts::_types::Contact;
 use crate::leads::_types::Lead;
 use crate::opportunities::_types::Opportunity;
 use crate::pipelines::_types::Pipeline;
+use crate::service::formatters;
 use crate::users::_types::User;
 use crate::{companies::_types::Company, crm::activities::_types::Activity};
 use serde::{Deserialize, Serialize};
@@ -222,4 +223,53 @@ pub struct CustomField {
     pub name: Option<String>,
     pub description: Option<String>,
     pub value: Option<Value>,
+}
+
+#[serde_with::skip_serializing_none]
+#[derive(Default, Debug, Clone, Serialize, Deserialize)]
+pub struct Attendee {
+    pub id: String,
+    pub name: Option<String>,
+    pub first_name: Option<String>,
+    pub middle_name: Option<String>,
+    pub last_name: Option<String>,
+    pub prefix: Option<String>,
+    pub suffix: Option<String>,
+    pub email_address: Option<String>,
+    pub is_organizer: Option<bool>,
+    pub status: Option<String>,
+    pub user_id: Option<String>,
+    pub contact_id: Option<String>,
+    pub updated_at: Option<String>,
+    pub created_at: Option<String>,
+}
+
+#[serde_with::skip_serializing_none]
+#[derive(Default, Debug, Clone, Serialize, Deserialize)]
+pub struct AttendeeFormatted {
+    pub id: String,
+    pub full_name: Option<String>,
+    pub email_address: Option<String>,
+    pub is_organizer: Option<bool>,
+    pub status: Option<String>,
+    pub updated_at: Option<String>,
+}
+
+impl Attendee {
+    pub fn format(&self) -> AttendeeFormatted {
+        let full_name = formatters::get_full_name(
+            self.first_name.as_deref().unwrap_or(""),
+            self.middle_name.as_deref().unwrap_or(""),
+            self.last_name.as_deref().unwrap_or(""),
+        );
+
+        return AttendeeFormatted {
+            id: self.id.clone(),
+            full_name: full_name,
+            email_address: self.email_address.clone(),
+            is_organizer: self.is_organizer.clone(),
+            status: self.status.clone(),
+            updated_at: self.updated_at.clone(),
+        };
+    }
 }

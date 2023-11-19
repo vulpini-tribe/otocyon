@@ -62,3 +62,22 @@ pub fn get_primary_website(websites: &Option<Vec<Website>>) -> String {
         None => String::from(""),
     }
 }
+
+pub fn get_full_name(first_name: &str, middle_name: &str, last_name: &str) -> Option<String> {
+    let mut full_name = first_name.to_owned();
+
+    if middle_name.len() > 0 {
+        full_name.push_str(format!(" {middle_name}").as_str());
+    }
+
+    if last_name.len() > 0 {
+        full_name.push_str(format!(" {last_name}").as_str());
+    }
+
+    full_name = full_name.trim().to_owned();
+
+    match full_name.is_empty() {
+        true => None,
+        false => Some(full_name.to_owned()),
+    }
+}

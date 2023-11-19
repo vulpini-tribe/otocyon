@@ -1,14 +1,15 @@
+use super::_types::User;
 use crate::service::req_client::req_client;
 use crate::types::Response;
 use actix_web::{web, HttpRequest, HttpResponse};
-use serde_json::{json, Value};
+use serde_json::json;
 
-pub async fn send_request(req: &HttpRequest, user_id: &str) -> Response<Value> {
+pub async fn send_request(req: &HttpRequest, user_id: &str) -> Response<User> {
     let client = req_client(req);
     let url = format!("https://unify.apideck.com/crm/users/{user_id}");
 
     let response = client.get(url).send().await;
-    let response = response.unwrap().json::<Response<Value>>().await;
+    let response = response.unwrap().json::<Response<User>>().await;
 
     return response.unwrap();
 }

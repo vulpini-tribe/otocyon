@@ -1,4 +1,4 @@
-use crate::companies::_types::CompanyFormatted;
+use crate::companies::_types::Company;
 use crate::leads::_types::Lead;
 use crate::types;
 
@@ -58,7 +58,7 @@ pub struct ContactFormatted {
     pub current_balance: Option<i64>,
 
     pub custom_fields: Option<Vec<types::CustomField>>,
-    pub company: Option<CompanyFormatted>,
+    pub company: Option<Company>,
     pub lead: Option<Lead>,
 }
 

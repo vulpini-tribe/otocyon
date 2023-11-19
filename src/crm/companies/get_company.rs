@@ -22,7 +22,7 @@ pub async fn get_company(req: HttpRequest, path: web::Path<String>) -> HttpRespo
     let company = send_request(&req, &company_id).await.data.unwrap();
     let owner_id = company.owner_id.as_ref().unwrap();
 
-    let crm_user = get_user::send_request(&req, &owner_id).await.to_user();
+    let crm_user = get_user::send_request(&req, &owner_id).await.data.unwrap();
     let company = company.format_one(Some(crm_user));
 
     HttpResponse::Ok().json(json!(web::Json(company)))

@@ -89,6 +89,7 @@ pub async fn get_opportunity(
             RequestKinds::CONTACT => {
                 contact = Some(TossKindOr::contact(value).expect("Contact is None"))
             }
+            _ => (),
         });
 
     let formatted = opportunity.format_one((

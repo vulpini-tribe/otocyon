@@ -29,7 +29,6 @@ pub async fn get_contact(
     let response = send_request(&req, &contact_id).await;
     let contact = response.data.as_ref().expect("Contact is None");
 
-    println!("Contact: {:#?}", contact);
     let futures = FuturesUnordered::new();
 
     let mut company = None;
