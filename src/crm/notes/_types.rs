@@ -26,6 +26,7 @@ pub struct NoteFormatted {
     // pub company: Option<Company>,
     // pub contact: Option<Contact>,
     // pub opportunity: Option<Opportunity>,
+    // pub lead: Option<Lead>,
 }
 
 #[serde_with::skip_serializing_none]
@@ -38,6 +39,7 @@ pub struct Note {
     pub company_id: Option<String>,
     pub contact_id: Option<String>,
     pub opportunity_id: Option<String>,
+    pub lead_id: Option<String>,
     pub active: Option<bool>,
     pub updated_by: String,
     pub updated_at: String,

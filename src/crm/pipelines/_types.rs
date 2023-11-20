@@ -5,6 +5,9 @@ use serde::{Deserialize, Serialize};
 pub struct PipelineStage {
     pub id: String,
     pub name: String,
+    pub value: Option<String>,
+    pub win_probability: Option<i8>,
+    pub display_order: Option<i32>,
 }
 
 #[serde_with::skip_serializing_none]
@@ -14,8 +17,12 @@ pub struct Pipeline {
     pub name: Option<String>,
     pub display_order: Option<i32>,
     pub archived: Option<bool>,
+    pub currency: Option<String>,
+    pub active: Option<bool>,
+    pub win_probability_enabled: Option<bool>,
     pub created_at: Option<String>,
     pub updated_at: Option<String>,
+
     pub stages: Vec<PipelineStage>,
 }
 
