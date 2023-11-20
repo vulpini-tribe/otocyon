@@ -7,11 +7,17 @@ pub mod vault;
 use crate::crm::{activities, companies, contacts, leads, notes, opportunities, pipelines, users};
 use crate::vault::get_connections;
 use actix_cors::Cors;
+use actix_web::middleware::Logger;
 use actix_web::{web, App, HttpServer};
 use log::info;
+use service::service_logger::init_logger;
 
 #[actix_web::main]
 async fn main() -> std::io::Result<()> {
+    init_logger();
+
+    info!("Main bootstrap server starts");
+
     let env_config = service::env::EnvConfig::new();
     std::env::set_var("APIDECK_API_KEY", &env_config.api_key);
     std::env::set_var("APIDECK_APP_ID", &env_config.app_id);
@@ -27,8 +33,11 @@ async fn main() -> std::io::Result<()> {
             .allow_any_method()
             .send_wildcard();
 
+        let logger = Logger::default();
+
         App::new()
             .app_data(web::Data::new(redis.clone()))
+            .wrap(logger)
             .wrap(cors)
             .service(
                 web::scope("/prism")

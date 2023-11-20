@@ -1,3 +1,5 @@
+// Many thanks to Dmitry Mikryukov | https://github.com/builat
+
 use crate::errors::controller_errors::ServiceErrors;
 use actix_web::http::header::HeaderMap;
 use std::ops::Add;

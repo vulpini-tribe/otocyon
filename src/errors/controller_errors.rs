@@ -1,3 +1,5 @@
+// Many thanks to Dmitry Mikryukov | https://github.com/builat
+
 use std::error::Error;
 use std::fmt;
 

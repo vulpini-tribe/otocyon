@@ -10,9 +10,10 @@ use std::str;
 #[derive(Default, Debug, Clone, Serialize, Deserialize)]
 pub struct NoteFormattedList {
     pub id: String,
-    pub title: String,
-    pub content: String,
-    pub active: bool,
+    pub title: Option<String>,
+    pub content: Option<String>,
+    pub updated_at: String,
+    pub created_at: String,
 }
 
 #[serde_with::skip_serializing_none]

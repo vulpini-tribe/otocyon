@@ -1,7 +1,5 @@
 use super::_types::{Lead, LeadFormatted, LeadFormattedList};
-use crate::service::formatters::{get_primary_email, get_primary_phone};
-
-use crate::service::format_money::format_money;
+use crate::service::formatters::{format_money, get_primary_email, get_primary_phone};
 
 impl Lead {
     fn monetary(&self) -> String {

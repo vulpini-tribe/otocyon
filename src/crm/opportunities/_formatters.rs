@@ -4,7 +4,7 @@ use crate::contacts::_types::Contact;
 use crate::leads::_types::Lead;
 use crate::pipelines::_types::Pipeline;
 
-use crate::service::format_money::format_money;
+use crate::service::formatters::format_money;
 
 impl Opportunity {
     fn monetary(&self) -> Option<String> {

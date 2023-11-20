@@ -4,9 +4,10 @@ impl Note {
     pub fn format_list(&self) -> NoteFormattedList {
         let formatted = NoteFormattedList {
             id: self.id.clone(),
-            title: self.title.clone().unwrap_or(String::from("")),
-            content: self.content.clone().unwrap_or(String::from("")),
-            active: self.active.clone().unwrap_or(true),
+            title: self.title.clone(),
+            content: self.content.clone(),
+            updated_at: self.updated_at.clone(),
+            created_at: self.created_at.clone(),
         };
 
         formatted

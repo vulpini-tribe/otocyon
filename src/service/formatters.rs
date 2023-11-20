@@ -1,4 +1,6 @@
 use crate::types::{Email, PhoneNumber, Website};
+use num_format::{Locale, ToFormattedString};
+use rusty_money::{iso, Money};
 
 pub fn get_primary_phone(phone_numbers: &Option<Vec<PhoneNumber>>) -> String {
     match phone_numbers {
@@ -79,5 +81,17 @@ pub fn get_full_name(first_name: &str, middle_name: &str, last_name: &str) -> Op
     match full_name.is_empty() {
         true => None,
         false => Some(full_name.to_owned()),
+    }
+}
+
+pub fn format_money(monetary_amount: i64, currency: &str) -> String {
+    let currency = iso::find(currency).unwrap_or(iso::USD);
+    let money = Money::from_major(monetary_amount, currency);
+    let currency = money.currency();
+    let amount = monetary_amount.to_formatted_string(&Locale::en);
+
+    match currency.symbol_first {
+        true => format!("{}\u{2009}{}", currency.symbol, amount),
+        false => format!("{}\u{2009}{}", amount, currency.symbol),
     }
 }
