@@ -7,7 +7,7 @@ use serde_json::json;
 use super::_types::{Opportunity, OpportunityFormattedList};
 
 pub async fn get_opportunities(req: HttpRequest) -> HttpResponse {
-    let query = [("limit", "20")];
+    let query = [("limit", "100")];
 
     let response = req_client(&req)
         .get("https://unify.apideck.com/crm/opportunities")

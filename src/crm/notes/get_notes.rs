@@ -6,7 +6,7 @@ use actix_web::{web, HttpRequest, HttpResponse};
 use serde_json::json;
 
 pub async fn get_notes(req: HttpRequest) -> HttpResponse {
-    let query = [("limit", "20")];
+    let query = [("limit", "100")];
 
     let response = req_client(&req)
         .get("https://unify.apideck.com/crm/notes")

@@ -8,7 +8,7 @@ use futures::StreamExt;
 use serde_json::json;
 
 pub async fn get_pipelines(req: HttpRequest, redis: web::Data<redis::Client>) -> HttpResponse {
-    let query = [("limit", "20")];
+    let query = [("limit", "100")];
 
     let response = req_client(&req)
         .get("https://unify.apideck.com/crm/pipelines")
