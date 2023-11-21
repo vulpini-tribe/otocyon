@@ -1,6 +1,7 @@
 use super::_types::{Lead, LeadFormatted, LeadFormattedList};
-use crate::service::formatters::{
-    format_money, get_language, get_primary_email, get_primary_phone,
+use crate::{
+    crm::companies::_types::Company,
+    service::formatters::{format_money, get_language, get_primary_email, get_primary_phone},
 };
 
 impl Lead {
@@ -38,10 +39,10 @@ impl Lead {
         formatted
     }
 
-    pub fn format_one(&self) -> LeadFormatted {
+    pub fn format_one(&self, company: Company) -> LeadFormatted {
         let language_code = &self.language.clone().unwrap_or(String::from("en"));
 
-        let formatted = LeadFormatted {
+        let mut formatted = LeadFormatted {
             id: self.id.clone(),
             company_name: self.company_name.clone(),
             lead_source: self.lead_source.clone(),
@@ -66,6 +67,10 @@ impl Lead {
 
             company: None,
         };
+
+        if self.company_id.is_some() {
+            formatted.company = Some(company);
+        }
 
         formatted
     }
