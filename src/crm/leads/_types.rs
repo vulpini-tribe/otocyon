@@ -1,3 +1,4 @@
+use crate::companies::_types::Company;
 use crate::types;
 use serde::{Deserialize, Serialize};
 
@@ -48,6 +49,21 @@ pub struct LeadFormattedList {
 #[derive(Default, Debug, Clone, Serialize, Deserialize)]
 pub struct LeadFormatted {
     pub id: String,
+    pub company_name: Option<String>,
+    pub company: Option<Company>,
+    pub lead_source: Option<String>,
+    pub name: String,
+    pub description: Option<String>,
+    pub language: String,
+    pub status: Option<String>,
+    pub monetary_amount: String,
+    pub websites: Option<Vec<types::Website>>,
+    pub addresses: Option<Vec<types::Address>>,
+    pub social_links: Option<Vec<types::Website>>,
+    pub phone_numbers: Vec<types::FormattedPhoneNumber>,
+    pub emails: Option<Vec<types::Email>>,
+    pub custom_fields: Option<Vec<types::CustomField>>,
+    pub tags: Option<Vec<String>>,
 }
 
 #[serde_with::skip_serializing_none]

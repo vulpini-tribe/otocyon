@@ -36,3 +36,4 @@ redis = { version = "0.23.3", features = [
     "tokio-native-tls-comp",
     "json",
 ] }
+isolang = "2.3.0"

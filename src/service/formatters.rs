@@ -1,6 +1,19 @@
 use crate::types::{Email, PhoneNumber, Website};
+use isolang::Language;
 use num_format::{Locale, ToFormattedString};
 use rusty_money::{iso, Money};
+
+pub fn get_language(lang_code: &str) -> String {
+    let language = match Language::from_639_1(lang_code) {
+        Some(lang_code) => Some(lang_code),
+        None => match Language::from_639_3(lang_code) {
+            Some(lang_code) => Some(lang_code),
+            None => Language::from_639_1("en"),
+        },
+    };
+
+    language.unwrap().to_name().to_owned()
+}
 
 pub fn get_primary_phone(phone_numbers: &Option<Vec<PhoneNumber>>) -> String {
     match phone_numbers {
