@@ -17,6 +17,9 @@ pub async fn send_request(req: &HttpRequest, user_id: &str) -> Response<User> {
 pub async fn get_user(req: HttpRequest, payload: web::Path<String>) -> HttpResponse {
     let user_id = payload.into_inner();
     let response = send_request(&req, &user_id).await;
+    let user = response.data.as_ref().expect("User is unknown");
 
-    HttpResponse::Ok().json(json!(web::Json(response)))
+    let formatted = user.format_one();
+
+    HttpResponse::Ok().json(json!(web::Json(formatted)))
 }

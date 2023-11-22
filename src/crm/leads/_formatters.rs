@@ -1,7 +1,8 @@
 use super::_types::{Lead, LeadFormatted, LeadFormattedList};
-use crate::{
-    crm::companies::_types::Company,
-    service::formatters::{format_money, get_language, get_primary_email, get_primary_phone},
+use crate::companies::_types::Company;
+
+use crate::service::formatters::{
+    format_money, get_language, get_primary_email, get_primary_phone,
 };
 
 impl Lead {

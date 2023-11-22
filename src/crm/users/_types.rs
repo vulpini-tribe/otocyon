@@ -1,4 +1,4 @@
-use crate::types::{Address, Email, PhoneNumber};
+use crate::types::{Address, Email, FormattedPhoneNumber, PhoneNumber};
 use serde::{Deserialize, Serialize};
 
 #[serde_with::skip_serializing_none]
@@ -42,6 +42,19 @@ pub struct UserFormattedList {
 #[derive(Default, Debug, Clone, Serialize, Deserialize)]
 pub struct UserFormatted {
     pub id: String,
+    pub username: Option<String>,
+    pub name: String,
+    pub title: Option<String>,
+    pub division: Option<String>,
+    pub department: Option<String>,
+    pub company_name: Option<String>,
+    pub employee_number: Option<String>,
+    pub description: Option<String>,
+    pub image: Option<String>,
+    pub language: String,
+    pub status: Option<String>,
+    pub phone_numbers: Vec<FormattedPhoneNumber>,
+    pub emails: Option<Vec<Email>>,
 }
 
 #[serde_with::skip_serializing_none]
