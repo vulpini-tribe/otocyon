@@ -1,10 +1,11 @@
 use serde::{Deserialize, Serialize};
 use std::str;
 
-// use crate::companies::_types::Company;
-// use crate::contacts::_types::Contact;
-// use crate::opportunities::_types::Opportunity;
-// use crate::users::_types::User;
+use crate::companies::_types::Company;
+use crate::contacts::_types::Contact;
+use crate::leads::_types::Lead;
+use crate::opportunities::_types::Opportunity;
+use crate::users::_types::User;
 
 #[serde_with::skip_serializing_none]
 #[derive(Default, Debug, Clone, Serialize, Deserialize)]
@@ -23,11 +24,12 @@ pub struct NoteFormatted {
     pub title: String,
     pub content: String,
     pub active: bool,
-    // pub owner: Option<User>,
-    // pub company: Option<Company>,
-    // pub contact: Option<Contact>,
-    // pub opportunity: Option<Opportunity>,
-    // pub lead: Option<Lead>,
+
+    pub owner: Option<User>,
+    pub company: Option<Company>,
+    pub contact: Option<Contact>,
+    pub opportunity: Option<Opportunity>,
+    pub lead: Option<Lead>,
 }
 
 #[serde_with::skip_serializing_none]
@@ -36,7 +38,7 @@ pub struct Note {
     pub id: String,
     pub title: Option<String>,
     pub content: Option<String>,
-    pub owner_id: String,
+    pub owner_id: Option<String>,
     pub company_id: Option<String>,
     pub contact_id: Option<String>,
     pub opportunity_id: Option<String>,
