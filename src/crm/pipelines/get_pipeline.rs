@@ -41,6 +41,7 @@ pub async fn get_pipeline(
 ) -> HttpResponse {
     let pipeline_id = payload.into_inner();
     let response = send_request(&req, &pipeline_id, redis).await;
+    let pipeline = response.data.as_ref().expect("Pipeline is unknown");
 
-    HttpResponse::Ok().json(json!(web::Json(response)))
+    HttpResponse::Ok().json(json!(web::Json(pipeline)))
 }
