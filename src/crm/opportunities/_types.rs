@@ -19,6 +19,7 @@ pub struct OpportunityFormattedList {
     pub priority: Option<String>,
     pub status: Option<String>,
     pub created_at: Option<String>,
+    pub stage_name: Option<String>, // {pipeline_id}.{pipeline_stage_id}
 }
 
 #[serde_with::skip_serializing_none]
@@ -37,6 +38,8 @@ pub struct OpportunityFormatted {
     pub priority: Option<String>,
     pub status: Option<String>,
     pub tags: Option<Vec<String>>,
+    pub pipeline_id: Option<String>,
+    pub pipeline_stage_id: Option<String>,
 
     pub custom_fields: Option<Vec<types::CustomField>>,
     pub company: Option<CompanyFormatted>, // company: by company_id

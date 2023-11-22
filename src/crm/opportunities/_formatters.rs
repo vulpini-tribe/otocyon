@@ -21,7 +21,7 @@ impl Opportunity {
         Some(format_money(expected_revenue, currency))
     }
 
-    pub fn format_list(&self) -> OpportunityFormattedList {
+    pub fn format_list(&self, stage_name: String) -> OpportunityFormattedList {
         let formatted = OpportunityFormattedList {
             id: self.id.clone(),
             title: self.title.clone(),
@@ -32,6 +32,7 @@ impl Opportunity {
             close_date: self.close_date.clone(),
             priority: self.priority.clone(),
             status: self.status.clone(),
+            stage_name: Some(stage_name),
         };
 
         formatted
@@ -54,6 +55,9 @@ impl Opportunity {
             priority: self.priority.clone(),
             status: self.status.clone(),
             tags: self.tags.clone(),
+
+            pipeline_id: self.pipeline_id.clone(),
+            pipeline_stage_id: self.pipeline_stage_id.clone(),
 
             custom_fields: self.custom_fields.clone(),
             company: None,
