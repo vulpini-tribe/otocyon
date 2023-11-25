@@ -3,8 +3,8 @@ use std::str;
 
 use crate::companies::_types::Company;
 use crate::contacts::_types::Contact;
-use crate::leads::_types::Lead;
-use crate::opportunities::_types::Opportunity;
+use crate::leads::_types::LeadFormatted;
+use crate::opportunities::_types::OpportunityFormatted;
 use crate::users::_types::User;
 
 #[serde_with::skip_serializing_none]
@@ -28,8 +28,8 @@ pub struct NoteFormatted {
     pub owner: Option<User>,
     pub company: Option<Company>,
     pub contact: Option<Contact>,
-    pub opportunity: Option<Opportunity>,
-    pub lead: Option<Lead>,
+    pub opportunity: Option<OpportunityFormatted>,
+    pub lead: Option<LeadFormatted>,
 }
 
 #[serde_with::skip_serializing_none]

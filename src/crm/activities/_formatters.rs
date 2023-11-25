@@ -23,11 +23,20 @@ impl Activity {
         formatted
     }
 
-    pub fn format_one(&self, external: (User, Company, Contact, Opportunity)) -> ActivityFormatted {
+    pub fn format_one(
+        &self,
+        external: (
+            Option<User>,
+            Option<Company>,
+            Option<Contact>,
+            Option<Opportunity>,
+        ),
+    ) -> ActivityFormatted {
         let (user, company, contact, opportunity) = external;
 
-        let opportunity_id = self.opportunity_id.clone().unwrap_or(String::from(""));
+        let company_id = self.company_id.clone().unwrap_or(String::from(""));
         let contact_id = self.contact_id.clone().unwrap_or(String::from(""));
+        let opportunity_id = self.opportunity_id.clone().unwrap_or(String::from(""));
 
         let attendees = self
             .attendees
@@ -63,21 +72,23 @@ impl Activity {
         };
 
         if self.owner_id.is_some() {
-            formatted.owner = Some(user);
+            formatted.owner = user;
         }
 
-        if self.company_id.is_some() {
-            formatted.company = Some(company);
+        if company_id.len() > 0 && company_id != "n/a" && company.is_some() {
+            formatted.company = company;
         }
 
         if contact_id.len() > 0 && contact_id != "n/a" {
-            formatted.contact = Some(contact);
+            formatted.contact = contact;
         }
 
-        if opportunity_id.len() > 0 && opportunity_id != "n/a" {
-            formatted.opportunity = Some(opportunity);
+        if opportunity_id.len() > 0 && opportunity_id != "n/a" && opportunity.is_some() {
+            formatted.opportunity = match opportunity {
+                Some(opportunity) => Some(opportunity.format_one((None, None, None, None))),
+                None => None,
+            };
         }
-
         formatted
     }
 }

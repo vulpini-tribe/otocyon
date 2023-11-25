@@ -38,8 +38,18 @@ impl Opportunity {
         formatted
     }
 
-    pub fn format_one(&self, external: (Company, Pipeline, Lead, Contact)) -> OpportunityFormatted {
+    pub fn format_one(
+        &self,
+        external: (
+            Option<Company>,
+            Option<Pipeline>,
+            Option<Lead>,
+            Option<Contact>,
+        ),
+    ) -> OpportunityFormatted {
         let (company, pipeline, lead, contact) = external;
+
+        let company_id = self.company_id.clone().unwrap_or(String::from(""));
 
         let mut formatted = OpportunityFormatted {
             id: self.id.clone(),
@@ -66,20 +76,26 @@ impl Opportunity {
             lead: None,
         };
 
-        if self.company_id.is_some() {
-            formatted.company = Some(company.format_one(None));
+        if company_id.len() > 0 && company_id != "n/a" && company.is_some() {
+            formatted.company = match company {
+                Some(company) => Some(company.format_one(None)),
+                None => None,
+            };
         }
 
         if self.primary_contact_id.clone().len() > 0 && self.primary_contact_id != "n/a" {
-            formatted.contact = Some(contact);
+            formatted.contact = contact;
         }
 
         if self.pipeline_id.is_some() {
-            formatted.pipeline = Some(pipeline);
+            formatted.pipeline = pipeline;
         }
 
-        if self.lead_id.is_some() {
-            formatted.lead = Some(lead);
+        if self.lead_id.is_some() && lead.is_some() {
+            formatted.lead = match lead {
+                Some(lead) => Some(lead.format_one(None)),
+                None => None,
+            };
         }
 
         formatted

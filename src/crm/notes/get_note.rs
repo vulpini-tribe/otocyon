@@ -30,6 +30,7 @@ pub async fn get_note(
 
     let futures = FuturesUnordered::new();
 
+    let company_id = note.company_id.clone().unwrap_or(String::from(""));
     let contact_id = note.contact_id.clone().unwrap_or(String::from(""));
     let opportunity_id = note.opportunity_id.clone().unwrap_or(String::from(""));
 
@@ -45,7 +46,7 @@ pub async fn get_note(
         futures.push(request)
     }
 
-    if let Some(company_id) = &note.company_id {
+    if company_id.len() > 0 && company_id != "n/a" {
         let request = toss_request(
             &req,
             company_id.clone(),

@@ -1,7 +1,7 @@
 use super::_types::{Company, CompanyFormatted, CompanyFormattedList};
 use crate::users::_types::User;
 
-use crate::service::formatters::{get_primary_phone, get_primary_website};
+use crate::service::formatters::{get_full_name, get_primary_phone, get_primary_website};
 
 impl Company {
     pub fn format_list(&self) -> CompanyFormattedList {
@@ -18,12 +18,15 @@ impl Company {
     }
 
     pub fn format_one(&self, owner: Option<User>) -> CompanyFormatted {
+        let first_name = self.first_name.clone().unwrap_or(String::from(""));
+        let last_name = self.last_name.clone().unwrap_or(String::from(""));
+
         let mut formatted = CompanyFormatted {
             id: self.id.clone(),
-            name: self.name.clone(),
+            company_name: self.name.clone(),
 
             description: self.description.clone(),
-            contact_person: self.first_name.clone(),
+            name: get_full_name(&first_name, &"", &last_name),
             status: self.status.clone(),
             annual_revenue: self.annual_revenue.clone(),
 

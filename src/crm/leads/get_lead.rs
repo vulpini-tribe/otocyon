@@ -55,7 +55,7 @@ pub async fn get_lead(
             _ => (),
         });
 
-    let formatted = lead.format_one(company.unwrap_or_default());
+    let formatted = lead.format_one(company);
 
     HttpResponse::Ok().json(json!(web::Json(formatted)))
 }

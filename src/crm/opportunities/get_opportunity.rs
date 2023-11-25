@@ -92,12 +92,7 @@ pub async fn get_opportunity(
             _ => (),
         });
 
-    let formatted = opportunity.format_one((
-        company.unwrap_or_default(),
-        pipeline.unwrap_or_default(),
-        lead.unwrap_or_default(),
-        contact.unwrap_or_default(),
-    ));
+    let formatted = opportunity.format_one((company, pipeline, lead, contact));
 
     HttpResponse::Ok().json(json!(web::Json(formatted)))
 }

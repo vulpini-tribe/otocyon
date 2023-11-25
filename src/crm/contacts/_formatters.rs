@@ -26,8 +26,10 @@ impl Contact {
         formatted
     }
 
-    pub fn format_one(&self, external: (Company, Lead)) -> ContactFormatted {
+    pub fn format_one(&self, external: (Option<Company>, Option<Lead>)) -> ContactFormatted {
         let (company, lead) = external;
+
+        let company_id = self.company_id.clone().unwrap_or(String::from(""));
 
         let full_name = formatters::get_full_name(
             self.first_name.as_deref().unwrap_or(""),
@@ -65,12 +67,15 @@ impl Contact {
             lead: None,
         };
 
-        if self.company_id.is_some() {
-            formatted.company = Some(company);
+        if company_id.len() > 0 && company_id != "n/a" && company.is_some() {
+            formatted.company = company;
         }
 
-        if self.lead_id.is_some() {
-            formatted.lead = Some(lead);
+        if self.lead_id.is_some() && lead.is_some() {
+            formatted.lead = match lead {
+                Some(lead) => Some(lead.format_one(None)),
+                None => None,
+            };
         }
 
         formatted

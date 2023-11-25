@@ -40,7 +40,9 @@ impl Lead {
         formatted
     }
 
-    pub fn format_one(&self, company: Company) -> LeadFormatted {
+    pub fn format_one(&self, company: Option<Company>) -> LeadFormatted {
+        let company_id = self.company_id.clone().unwrap_or(String::from(""));
+
         let language_code = &self.language.clone().unwrap_or(String::from("en"));
 
         let mut formatted = LeadFormatted {
@@ -69,8 +71,8 @@ impl Lead {
             company: None,
         };
 
-        if self.company_id.is_some() {
-            formatted.company = Some(company);
+        if company_id.len() > 0 && company_id != "n/a" && company.is_some() {
+            formatted.company = company;
         }
 
         formatted

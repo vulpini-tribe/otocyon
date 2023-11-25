@@ -90,12 +90,7 @@ pub async fn get_activity(
             _ => (),
         });
 
-    let formatted = activity.format_one((
-        user.unwrap_or_default(),
-        company.unwrap_or_default(),
-        contact.unwrap_or_default(),
-        opportunity.unwrap_or_default(),
-    ));
+    let formatted = activity.format_one((user, company, contact, opportunity));
 
     HttpResponse::Ok().json(json!(web::Json(formatted)))
 }

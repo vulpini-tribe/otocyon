@@ -3,8 +3,8 @@ use serde::{Deserialize, Serialize};
 use std::str;
 
 use crate::crm::{
-    companies::_types::Company, contacts::_types::Contact, opportunities::_types::Opportunity,
-    users::_types::User,
+    companies::_types::Company, contacts::_types::Contact,
+    opportunities::_types::OpportunityFormatted, users::_types::User,
 };
 
 #[serde_with::skip_serializing_none]
@@ -38,10 +38,10 @@ pub struct ActivityFormatted {
     pub attendees: Option<Vec<types::AttendeeFormatted>>,
     pub custom_fields: Option<Vec<types::CustomField>>,
 
-    pub owner: Option<User>,              // owner_id
-    pub company: Option<Company>,         // company_id
-    pub contact: Option<Contact>,         // contact_id
-    pub opportunity: Option<Opportunity>, // opportunity_id
+    pub owner: Option<User>,                       // owner_id
+    pub company: Option<Company>,                  // company_id
+    pub contact: Option<Contact>,                  // contact_id
+    pub opportunity: Option<OpportunityFormatted>, // opportunity_id
 }
 
 #[serde_with::skip_serializing_none]

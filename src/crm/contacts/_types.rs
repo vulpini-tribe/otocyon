@@ -1,8 +1,9 @@
 use crate::companies::_types::Company;
-use crate::leads::_types::Lead;
+use crate::leads::_types::LeadFormatted;
 use crate::types;
 
 use serde::{Deserialize, Serialize};
+
 #[serde_with::skip_serializing_none]
 #[derive(Default, Debug, Clone, Serialize, Deserialize)]
 pub struct Contact {
@@ -68,7 +69,7 @@ pub struct ContactFormatted {
 
     pub custom_fields: Option<Vec<types::CustomField>>,
     pub company: Option<Company>,
-    pub lead: Option<Lead>,
+    pub lead: Option<LeadFormatted>,
 }
 
 #[serde_with::skip_serializing_none]

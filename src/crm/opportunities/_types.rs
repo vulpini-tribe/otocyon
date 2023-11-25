@@ -1,6 +1,6 @@
 use crate::companies::_types::CompanyFormatted;
 use crate::contacts::_types::Contact;
-use crate::leads::_types::Lead;
+use crate::leads::_types::LeadFormatted;
 use crate::pipelines::_types::Pipeline;
 use crate::types;
 
@@ -45,7 +45,7 @@ pub struct OpportunityFormatted {
     pub company: Option<CompanyFormatted>, // company: by company_id
     pub contact: Option<Contact>,          // contact: by primary_contact_id
     pub pipeline: Option<Pipeline>,        // pipeline: by pipeline_id + pipeline_stage_id
-    pub lead: Option<Lead>,                // lead: by lead_id
+    pub lead: Option<LeadFormatted>,       // lead: by lead_id
 }
 
 #[serde_with::skip_serializing_none]

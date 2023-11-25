@@ -1,14 +1,13 @@
-use crate::service::req_client::req_client;
+use super::_types::Contact;
 use crate::types::Response;
+use serde_json::json;
 
+use crate::service::req_client::req_client;
 use crate::service::toss_request::TossKindOr;
 use crate::service::toss_request::{toss_request, RequestKinds};
 use actix_web::{web, HttpRequest, HttpResponse};
 use futures::stream::FuturesUnordered;
 use futures::StreamExt;
-use serde_json::json;
-
-use super::_types::Contact;
 
 pub async fn send_request(req: &HttpRequest, contact_id: &str) -> Response<Contact> {
     let client = req_client(req);
@@ -63,7 +62,7 @@ pub async fn get_contact(
             _ => (),
         });
 
-    let formatted = contact.format_one((company.unwrap_or_default(), lead.unwrap_or_default()));
+    let formatted = contact.format_one((company, lead));
 
     HttpResponse::Ok().json(json!(web::Json(formatted)))
 }
