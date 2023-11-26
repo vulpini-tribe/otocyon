@@ -30,6 +30,7 @@ impl Note {
     ) -> NoteFormatted {
         let (owner, company, contact, opportunity, lead) = external;
 
+        let owner_id = self.owner_id.clone().unwrap_or(String::from(""));
         let company_id = self.company_id.clone().unwrap_or(String::from(""));
         let contact_id = self.contact_id.clone().unwrap_or(String::from(""));
         let opportunity_id = self.opportunity_id.clone().unwrap_or(String::from(""));
@@ -47,7 +48,7 @@ impl Note {
             lead: None,
         };
 
-        if self.owner_id.is_some() && owner.is_some() {
+        if owner_id.len() > 0 && owner_id != "n/a" && owner.is_some() {
             formatted.owner = owner;
         }
 

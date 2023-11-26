@@ -30,6 +30,7 @@ pub async fn get_note(
 
     let futures = FuturesUnordered::new();
 
+    let owner_id = note.owner_id.clone().unwrap_or(String::from(""));
     let company_id = note.company_id.clone().unwrap_or(String::from(""));
     let contact_id = note.contact_id.clone().unwrap_or(String::from(""));
     let opportunity_id = note.opportunity_id.clone().unwrap_or(String::from(""));
@@ -40,7 +41,7 @@ pub async fn get_note(
     let mut opportunity = None;
     let mut lead = None;
 
-    if let Some(owner_id) = &note.owner_id {
+    if owner_id.len() > 0 && owner_id != "n/a" {
         let request = toss_request(&req, owner_id.clone(), RequestKinds::USER, redis.clone());
 
         futures.push(request)

@@ -102,7 +102,9 @@ pub struct Activity {
 #[derive(Default, Debug, Clone, Serialize, Deserialize)]
 pub struct PostActivity {
     pub title: String,
-    pub primary_contact_id: String,
+    pub description: String,
+    pub note: String,
+    pub r#type: String,
 }
 
 #[serde_with::skip_serializing_none]

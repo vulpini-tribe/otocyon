@@ -54,7 +54,8 @@ pub struct Note {
 #[derive(Default, Debug, Clone, Serialize, Deserialize)]
 pub struct PostNote {
     pub title: String,
-    pub primary_contact_id: String,
+    pub content: String,
+    pub active: bool,
 }
 
 #[serde_with::skip_serializing_none]

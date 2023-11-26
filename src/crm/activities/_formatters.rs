@@ -34,6 +34,7 @@ impl Activity {
     ) -> ActivityFormatted {
         let (user, company, contact, opportunity) = external;
 
+        let owner_id = self.owner_id.clone().unwrap_or(String::from(""));
         let company_id = self.company_id.clone().unwrap_or(String::from(""));
         let contact_id = self.contact_id.clone().unwrap_or(String::from(""));
         let opportunity_id = self.opportunity_id.clone().unwrap_or(String::from(""));
@@ -71,7 +72,7 @@ impl Activity {
             opportunity: None, // opportunity_id
         };
 
-        if self.owner_id.is_some() {
+        if owner_id.len() > 0 && owner_id != "n/a" && user.is_some() {
             formatted.owner = user;
         }
 

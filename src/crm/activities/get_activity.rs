@@ -31,14 +31,16 @@ pub async fn get_activity(
 
     let futures = FuturesUnordered::new();
 
+    let owner_id = activity.owner_id.clone().unwrap_or(String::from(""));
+    let contact_id = activity.contact_id.clone().unwrap_or(String::from(""));
+    let opportunity_id = activity.opportunity_id.clone().unwrap_or(String::from(""));
+
     let mut user = None;
     let mut company = None;
     let mut contact = None;
     let mut opportunity = None;
-    let opportunity_id = activity.opportunity_id.clone().unwrap_or(String::from(""));
-    let contact_id = activity.contact_id.clone().unwrap_or(String::from(""));
 
-    if let Some(owner_id) = &activity.owner_id {
+    if owner_id.len() > 0 && owner_id != "n/a" {
         let request = toss_request(&req, owner_id.clone(), RequestKinds::USER, redis.clone());
 
         futures.push(request)
