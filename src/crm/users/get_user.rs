@@ -6,14 +6,10 @@ use serde_json::json;
 
 pub async fn send_request(req: &HttpRequest, user_id: &str) -> Response<User> {
     let client = req_client(req);
-
-    // println!("User ID: {:#?}", user_id);
     let url = format!("https://unify.apideck.com/crm/users/{user_id}");
 
     let response = client.get(url).send().await;
     let response = response.unwrap().json::<Response<User>>().await;
-
-    // println!("Response: {:#?}", response);
 
     return response.unwrap();
 }

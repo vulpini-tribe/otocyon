@@ -10,24 +10,6 @@ use serde_json::Value;
 
 #[serde_with::skip_serializing_none]
 #[derive(Default, Debug, Clone, Serialize, Deserialize)]
-pub struct Isss {
-    pub code: Option<String>,
-    pub message: Option<String>,
-    pub detail: Option<String>,
-    pub errors: Option<String>,
-}
-
-// #[serde_with::skip_serializing_none]
-// #[derive(Debug, Clone, Serialize, Deserialize)]
-// pub enum Dynamic {
-//     context,
-//     Ok(String),
-//     #[serde(rename = "errors")]
-//     Err(Vec<Isss>),
-// }
-
-#[serde_with::skip_serializing_none]
-#[derive(Default, Debug, Clone, Serialize, Deserialize)]
 pub struct Response<T> {
     pub data: Option<T>,
     pub status_code: Option<u16>,
