@@ -17,13 +17,14 @@ pub struct Isss {
     pub errors: Option<String>,
 }
 
-#[serde_with::skip_serializing_none]
-#[derive(Debug, Clone, Serialize, Deserialize)]
-pub enum Dynamic {
-    Ok(String),
-    #[serde(rename = "errors")]
-    Err(Vec<Isss>),
-}
+// #[serde_with::skip_serializing_none]
+// #[derive(Debug, Clone, Serialize, Deserialize)]
+// pub enum Dynamic {
+//     context,
+//     Ok(String),
+//     #[serde(rename = "errors")]
+//     Err(Vec<Isss>),
+// }
 
 #[serde_with::skip_serializing_none]
 #[derive(Default, Debug, Clone, Serialize, Deserialize)]
@@ -34,7 +35,7 @@ pub struct Response<T> {
     pub error: Option<String>,
     pub type_name: Option<String>,
     pub message: Option<String>,
-    pub detail: Option<Dynamic>,
+    pub detail: Option<Value>,
     pub r#ref: Option<String>,
 }
 

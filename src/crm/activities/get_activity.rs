@@ -79,15 +79,33 @@ pub async fn get_activity(
         .await
         .into_iter()
         .for_each(|(value, kind)| match kind {
-            RequestKinds::USER => user = Some(TossKindOr::user(value).expect("User is None")),
+            RequestKinds::USER => {
+                let possible_user = TossKindOr::user(value);
+
+                if !possible_user.is_none() {
+                    user = possible_user
+                }
+            }
             RequestKinds::COMPANY => {
-                company = Some(TossKindOr::company(value).expect("Company is None"))
+                let possible_company = TossKindOr::company(value);
+
+                if !possible_company.is_none() {
+                    company = possible_company
+                }
             }
             RequestKinds::CONTACT => {
-                contact = Some(TossKindOr::contact(value).expect("Contact is None"))
+                let possible_contact = TossKindOr::contact(value);
+
+                if !possible_contact.is_none() {
+                    contact = possible_contact
+                }
             }
             RequestKinds::OPPORTUNITY => {
-                opportunity = Some(TossKindOr::opportunity(value).expect("Opportunity is None"))
+                let possible_opportunity = TossKindOr::opportunity(value);
+
+                if !possible_opportunity.is_none() {
+                    opportunity = possible_opportunity
+                }
             }
             _ => (),
         });

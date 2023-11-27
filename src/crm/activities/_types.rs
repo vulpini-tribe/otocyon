@@ -101,10 +101,10 @@ pub struct Activity {
 #[serde_with::skip_serializing_none]
 #[derive(Default, Debug, Clone, Serialize, Deserialize)]
 pub struct PostActivity {
-    pub title: String,
-    pub description: String,
-    pub note: String,
-    pub r#type: String,
+    pub title: Option<String>,
+    pub description: Option<String>,
+    pub note: Option<String>,
+    pub r#type: Option<String>,
 }
 
 #[serde_with::skip_serializing_none]
