@@ -54,7 +54,7 @@ async fn main() -> std::io::Result<()> {
                     .service(
                         web::resource("/notes/{note_id}")
                             .route(web::get().to(notes::get_note::get_note))
-                            .route(web::patch().to(notes::update_note::update_note)),
+                            .route(web::post().to(notes::update_note::update_note)),
                     )
                     .service(
                         web::resource("/activities")
@@ -67,7 +67,7 @@ async fn main() -> std::io::Result<()> {
                     .service(
                         web::resource("/activities/{activity_id}")
                             .route(web::get().to(activities::get_activity::get_activity))
-                            .route(web::patch().to(activities::update_activity::update_activity)),
+                            .route(web::post().to(activities::update_activity::update_activity)),
                     )
                     .service(
                         web::resource("/companies")

@@ -53,9 +53,9 @@ pub struct Note {
 #[serde_with::skip_serializing_none]
 #[derive(Default, Debug, Clone, Serialize, Deserialize)]
 pub struct PostNote {
-    pub title: String,
-    pub content: String,
-    pub active: bool,
+    pub title: Option<String>,
+    pub content: Option<String>,
+    pub active: Option<bool>,
 }
 
 #[serde_with::skip_serializing_none]
