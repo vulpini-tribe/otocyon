@@ -56,6 +56,11 @@ pub struct PostNote {
     pub title: Option<String>,
     pub content: Option<String>,
     pub active: Option<bool>,
+    pub contact_id: Option<String>,
+    pub company_id: Option<String>,
+    pub opportunity_id: Option<String>,
+    pub lead_id: Option<String>,
+    pub owner_id: Option<String>,
 }
 
 #[serde_with::skip_serializing_none]
