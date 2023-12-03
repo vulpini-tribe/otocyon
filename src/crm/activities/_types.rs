@@ -13,7 +13,7 @@ pub struct ActivityFormattedList {
     pub id: String,
     pub r#type: String,
     pub title: String,
-    pub updated_at: String,
+    pub updated_at: Option<String>,
     pub description: Option<String>,
 }
 
@@ -23,7 +23,7 @@ pub struct ActivityFormatted {
     pub id: String,
     pub r#type: String,
     pub title: String,
-    pub updated_at: String,
+    pub updated_at: Option<String>,
     pub description: Option<String>,
     pub duration: Option<i64>,
     pub is_all_day: Option<bool>,
@@ -92,10 +92,10 @@ pub struct Activity {
     pub note: Option<String>,
     pub location: Option<String>,
     pub location_address: Option<types::Address>,
-    pub updated_by: String,
-    pub updated_at: String,
-    pub created_by: String,
-    pub created_at: String,
+    pub updated_by: Option<String>,
+    pub updated_at: Option<String>,
+    pub created_by: Option<String>,
+    pub created_at: Option<String>,
 }
 
 #[serde_with::skip_serializing_none]

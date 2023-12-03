@@ -13,8 +13,8 @@ pub struct NoteFormattedList {
     pub id: String,
     pub title: Option<String>,
     pub content: Option<String>,
-    pub updated_at: String,
-    pub created_at: String,
+    pub updated_at: Option<String>,
+    pub created_at: Option<String>,
 }
 
 #[serde_with::skip_serializing_none]
@@ -44,10 +44,11 @@ pub struct Note {
     pub opportunity_id: Option<String>,
     pub lead_id: Option<String>,
     pub active: Option<bool>,
-    pub updated_by: String,
-    pub updated_at: String,
-    pub created_by: String,
-    pub created_at: String,
+
+    pub updated_by: Option<String>,
+    pub updated_at: Option<String>,
+    pub created_by: Option<String>,
+    pub created_at: Option<String>,
 }
 
 #[serde_with::skip_serializing_none]
