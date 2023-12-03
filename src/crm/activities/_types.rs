@@ -105,6 +105,7 @@ pub struct PostActivity {
     pub description: Option<String>,
     pub note: Option<String>,
     pub r#type: Option<String>,
+    pub activity_date: Option<String>,
 }
 
 #[serde_with::skip_serializing_none]
