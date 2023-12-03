@@ -106,6 +106,15 @@ pub struct PostActivity {
     pub note: Option<String>,
     pub r#type: Option<String>,
     pub activity_date: Option<String>,
+    pub activity_datetime: Option<String>,
+    pub duration_seconds: Option<i64>,
+    pub user_id: Option<String>,
+    pub account_id: Option<String>,
+    pub contact_id: Option<String>,
+    pub company_id: Option<String>,
+    pub opportunity_id: Option<String>,
+    pub lead_id: Option<String>,
+    pub owner_id: Option<String>,
 }
 
 #[serde_with::skip_serializing_none]
