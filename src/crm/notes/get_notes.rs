@@ -19,6 +19,8 @@ pub async fn get_notes(req: HttpRequest) -> HttpResponse {
         .await
         .unwrap();
 
+    log::info!("get_notes response: {:#?}", response);
+
     let notes: Vec<NoteFormattedList> = response
         .data
         .unwrap_or(vec![])
