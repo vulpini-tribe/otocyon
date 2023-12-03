@@ -21,7 +21,7 @@ pub async fn get_notes(req: HttpRequest) -> HttpResponse {
 
     let notes: Vec<NoteFormattedList> = response
         .data
-        .unwrap()
+        .unwrap_or(vec![])
         .into_iter()
         .map(|opportunity| opportunity.format_list())
         .collect();
